@@ -23,6 +23,7 @@ namespace Tushkanchik
         public MainWindow()
         {
             InitializeComponent();
+
         }
     }
 }
