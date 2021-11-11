@@ -31,9 +31,14 @@ namespace Tushkanchik
         {
             _name = name;
         }
-        public void ChangeBalance(string balance)
+        public void AddBalance(double diff)
         {
-            _balance = Convert.ToDouble(balance);
+
+            _balance+=diff;
+        }
+        public void RemoveBalance(double diff)
+        {
+            _balance -= diff;
         }
 
     }
