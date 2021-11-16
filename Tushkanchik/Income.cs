@@ -7,36 +7,51 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-    class Income
+    class Income: Transaction
     {
-        private double _amount;
-        private double _percent;
-        private string _to;
-        private string _from;
-        private int _card;
-        private bool _fixed;
-        private Income _category;
+        private decimal _balance;
+        private decimal _amount;
+        private int? _card;
+        private TransactionCategories _category;
         public Income()
         {
             _amount = 0;
-            _percent = 0;
-            _to = "";
-            _from = "";
-            _card = 0;
-            _fixed = true;
+            _card = null;
             _category = null;
+            
         }
-        public Income( double amount,double cashback, string to, string from, int card, Income category, Account account )
+        public Income(int card, TransactionCategories category, decimal amount, decimal balance)
         {
+            _balance = balance;
             _amount = amount;
-            _percent = cashback;
-            _to = to;
-            _from = from;
             _card = card;
             _category = category;
-            account.AddBalance(amount);
-
         }
+       public void AddBalance(decimal amount)
+        {
+            _balance += amount;
+        }
+        //public Income()
+        //{
+        //    _amount = 0;
+        //    _percent = 0;
+        //    _to = "";
+        //    _from = "";
+        //    _card = 0;
+        //    _fixed = true;
+            
+        //}
+        //public Income( decimal amount,double cashback, string to, string from, int card, Income category, CashAccount account )
+        //{
+        //    _amount = amount;
+        //    _percent = cashback;
+        //    _to = to;
+        //    _from = from;
+        //    _card = card;
+           
+        //    account.AddBalance(amount);
+
+        //}
       
 
     }
