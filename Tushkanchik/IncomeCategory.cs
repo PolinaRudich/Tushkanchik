@@ -13,5 +13,6 @@ namespace Tushkanchik
             Salary,
             Unknow
         }
+
     }
 }

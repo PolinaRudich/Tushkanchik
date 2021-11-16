@@ -15,7 +15,7 @@ namespace Tushkanchik
         private bool _percent { get;  set; }
         private bool _withdrawal { get; set; }
         private bool _replacement { get; set; }
-        public double _cashback { get; set; }
+        //public double _cashback { get; set; }
         public CashAccount()
         {
             _index = null;
@@ -25,9 +25,9 @@ namespace Tushkanchik
             _percent =false;
             _withdrawal = false;
             _replacement = false;
-            _cashback = 0;
+           
         }
-        public CashAccount(int idx,string name,User holder,bool percent,bool withdrawal,bool replacement, double cashback)
+        public CashAccount(int idx,string name,User holder,bool percent,bool withdrawal,bool replacement)
         {
             _index = idx;
             _balance = 0;
@@ -36,7 +36,7 @@ namespace Tushkanchik
             _percent = percent;
             _withdrawal = withdrawal;
             _replacement = replacement;
-            _cashback = cashback;
+         
         }
         public void ChangeName(string name)
         {
