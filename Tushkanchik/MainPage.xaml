@@ -12,18 +12,7 @@
                 <Grid HorizontalAlignment="Left" Margin="0,0,0,30" Width="327">
                     <TextBlock x:Name="textUser" FontSize="16"  RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="36" Margin="-114,-9,0,16" >User</TextBlock>
                     <TextBlock  FontSize="16" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="46" Margin="-114,19,0,-11" >Wallet</TextBlock>
-                    <ComboBox  HorizontalAlignment="Left" Width="168" Margin="-109,39,0,-39"  SelectionChanged="ComboBox_SelectionChanged_1" RenderTransformOrigin="0.162,0.596" FontSize="13" >
-
-                        <ComboBox.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform AngleY="-0.099"/>
-                                <RotateTransform/>
-                                <TranslateTransform Y="0.276"/>
-                            </TransformGroup>
-                        </ComboBox.RenderTransform>
-                        <ComboBoxItem Content="Users"/>
-                    </ComboBox>
+                   
                     <Button Content="Income" Margin="108,-9,123,9" Background="#FFA4A4A4" BorderBrush="Black"/>
                     <Button Content="Statisctics" Margin="372,-9,-170,9" Background="#FFA4A4A4" BorderBrush="Black"/>
                     <Button Content="Dependencies" Margin="221,-9,-30,9" Background="#FFA0A0A0" BorderBrush="Black" FontSize="16"/>
@@ -38,6 +27,7 @@
                     </TextBox>
                     <TextBlock Text="  $" TextWrapping="Wrap" Width="87" Margin="79,137,161,-121"/>
                     <TextBox Text="" TextWrapping="Wrap" Margin="79,155,161,-146" BorderBrush="{x:Null}" Foreground="#FF1B1B1C" TextChanged="TextBox_TextChanged" Background="#FFE5E5E5"></TextBox>
+                    <ComboBox Width="120" Margin="-114,48,321,-48" SelectionChanged="ComboBox_SelectionChanged"/>
                 </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0,0,0,30" Width="189" Height="105">
                     <Grid.ColumnDefinitions>
