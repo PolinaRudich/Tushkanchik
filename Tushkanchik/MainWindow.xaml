@@ -4,10 +4,51 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tushkanchik"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="1000">
     <Grid>
-        <Button Content="Button" Margin="312,138,309,204"/>
+        <Border MinWidth="400" Margin="81,0,108,0" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="550" Height="195">
+            <StackPanel Margin="0,0,-71,0">
+                <Grid HorizontalAlignment="Left" Margin="0,0,0,30" Width="221">
+                    <TextBlock  FontSize="24" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="76" >Users</TextBlock>
+
+                    <ComboBox x:Name="usersList" HorizontalAlignment="Left" Width="168" Margin="78,0,0,0"  SelectionChanged="ComboBox_SelectionChanged_1" RenderTransformOrigin="0.162,0.596" >
+                        <ComboBox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleY="-0.099"/>
+                                <RotateTransform/>
+                                <TranslateTransform Y="0.276"/>
+                            </TransformGroup>
+                        </ComboBox.RenderTransform>
+                        <ComboBoxItem Content="Users"/>
+                    </ComboBox>
+
+
+
+                </Grid>
+                <Grid HorizontalAlignment="Right" Margin="0,0,0,30" Width="189" Height="200">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="57*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="62*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name ="createAndEnter" TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="2" Grid.ColumnSpan="3">Name</TextBlock>
+                    <TextBox x:Name="holderName" Margin="-5,-40,5,53"  Grid.ColumnSpan="3"/>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create new account" Width="162"  Height="48" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="8,20,0,0" Click="Button_Click"/>
+                    <Button x:Name="Enter" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-127,28,95,60" Grid.RowSpan="2" Click="Button_Click_1"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+
+
 
     </Grid>
 </Window>
