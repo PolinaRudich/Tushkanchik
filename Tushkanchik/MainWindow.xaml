@@ -42,7 +42,7 @@
                     <TextBlock x:Name ="createAndEnter" TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="2" Grid.ColumnSpan="3">Name</TextBlock>
                     <TextBox x:Name="holderName" Margin="-5,-40,5,53"  Grid.ColumnSpan="3"/>
                     <Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create new account" Width="162"  Height="48" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="8,20,0,0" Click="Button_Click"/>
-                    <Button x:Name="Enter" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-127,28,95,60" Grid.RowSpan="2" Click="Button_Click_1"/>
+                    <Button x:Name="Enter" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-124,-26,92,34" Click="Button_Click_1"/>
                 </Grid>
 
             </StackPanel>

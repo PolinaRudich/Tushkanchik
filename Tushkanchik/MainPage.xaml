@@ -12,26 +12,32 @@
                 <Grid HorizontalAlignment="Left" Margin="0,0,0,30" Width="327">
                     <TextBlock x:Name="textUser" FontSize="16"  RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="36" Margin="-114,-9,0,16" >User</TextBlock>
                     <TextBlock  FontSize="16" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="46" Margin="-114,19,0,-11" >Wallet</TextBlock>
-                   
+
                     <Button Content="Income" Margin="108,-9,123,9" Background="#FFA4A4A4" BorderBrush="Black"/>
                     <Button Content="Statisctics" Margin="372,-9,-170,9" Background="#FFA4A4A4" BorderBrush="Black"/>
                     <Button Content="Dependencies" Margin="221,-9,-30,9" Background="#FFA0A0A0" BorderBrush="Black" FontSize="16"/>
                     <TextBlock FontSize="13" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="47" Margin="-35,-6,0,12"  Text="balance"  />
                     <TextBlock x:Name="textBalance"   FontSize="15" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="60" Margin="29,-9,0,16"  Text="" Background="#FFEBEBEB"  />
-                    <TextBlock Text="    Cash" HorizontalAlignment="Left" FontSize="20" TextWrapping="Wrap" Margin="79,48,0,-48" Background="#FFCCCCCC" Width="87"/>
+                    <TextBlock Text="    Cash" HorizontalAlignment="Left" FontSize="20" TextWrapping="Wrap" Margin="84,48,0,-48" Background="#FFCCCCCC" Width="87"/>
                     <TextBlock Text="Name:" TextWrapping="Wrap" Width="87" Margin="79,91,161,-75"/>
                     <TextBox Text="" TextWrapping="Wrap" Margin="79,112,161,-103" BorderBrush="{x:Null}" Foreground="#FF1B1B1C" TextChanged="TextBox_TextChanged" Background="#FFE5E5E5">
 
 
-                       
+
                     </TextBox>
                     <TextBlock Text="  $" TextWrapping="Wrap" Width="87" Margin="79,137,161,-121"/>
                     <TextBox Text="" TextWrapping="Wrap" Margin="79,155,161,-146" BorderBrush="{x:Null}" Foreground="#FF1B1B1C" TextChanged="TextBox_TextChanged" Background="#FFE5E5E5"></TextBox>
                     <ComboBox Width="120" Margin="-114,48,321,-48" SelectionChanged="ComboBox_SelectionChanged"/>
+                    
+                    <TextBlock Text="    Card" HorizontalAlignment="Left" FontSize="20" TextWrapping="Wrap" Margin="202,48,0,-48" Background="#FFCCCCCC" Width="87"/>
+                    <TextBlock Text="Deposits" FontSize="20" TextWrapping="Wrap" Margin="334,48,-93,-48" Background="#FFCBCBCB"/>
+                    <TextBox Text="TextBox" TextWrapping="Wrap" Width="120" Margin="202,116,5,-98"/>
+
                 </Grid>
-                <Grid HorizontalAlignment="Right" Margin="0,0,0,30" Width="189" Height="105">
+                <Grid HorizontalAlignment="Right" Margin="0,0,0,30" Width="51" Height="78">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="127*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="87*"/>
                         <ColumnDefinition Width="62*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>

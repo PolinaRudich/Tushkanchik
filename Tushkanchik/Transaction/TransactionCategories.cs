@@ -72,3 +72,4 @@ namespace Tushkanchik
         }
     }
 }
+// сократить до трех методов 
