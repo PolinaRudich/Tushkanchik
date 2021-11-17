@@ -26,7 +26,7 @@ namespace Tushkanchik
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string _UsersPath = "C:/Users/Asus/OneDrive/Документы/users.txt";
+        private const string _UsersPath = "C:/Users/Asus/source/repos/Tushkanchik/json/users.txt";
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +35,7 @@ namespace Tushkanchik
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
+           
 
         }
 
@@ -53,8 +54,9 @@ namespace Tushkanchik
                 // открыть поток для чтения 
                 string json = reader.ReadToEnd();
                 reader.Close();
-                
+               
                 List<User> users = JsonConvert.DeserializeObject<List<User>>(json);
+                
                 //парсинг превращаем текст в список юзеров
                 if (users is null)
                 {
@@ -67,7 +69,8 @@ namespace Tushkanchik
                 }
                 else
                 {
-                    users.Add(user);
+                   
+                   users.Add(user);
 
                     //foreach (User u in users)
                     //{
@@ -77,8 +80,9 @@ namespace Tushkanchik
                     // парсинг в строку чтоб записать тест в файл 
                     //Trace.WriteLine(converted);
                     File.WriteAllText(_UsersPath, converted);
-
+                    usersList.Items.Add(user._name);
                     MainPage mainPage = new MainPage();
+                   this.Hide();
                     mainPage.Show();
                 }
                 
@@ -88,7 +92,13 @@ namespace Tushkanchik
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-           
+
+            MainPage mainPage = new MainPage();
+            this.Hide();
+            mainPage.Show();
+
+
+
         }
     }
 }
