@@ -13,7 +13,7 @@
                 <Grid HorizontalAlignment="Left" Margin="0,0,0,30" Width="221">
                     <TextBlock  FontSize="24" RenderTransformOrigin="-0.033,0.752" HorizontalAlignment="Left" Width="76" >Users</TextBlock>
 
-                    <ComboBox  HorizontalAlignment="Left" Width="168" Margin="78,0,0,0"  SelectionChanged="ComboBox_SelectionChanged_1" RenderTransformOrigin="0.162,0.596" >
+                    <ComboBox x:Name="usersList" HorizontalAlignment="Left" Width="168" Margin="78,0,0,0"  SelectionChanged="ComboBox_SelectionChanged_1" RenderTransformOrigin="0.162,0.596" >
                         <ComboBox.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -39,10 +39,10 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="2" Grid.ColumnSpan="3">Name</TextBlock>
-                    <TextBox x:Name="holderName" Margin="-5,-40,5,53" TextChanged="TextBox_TextChanged_1" Grid.ColumnSpan="3"/>
+                    <TextBlock x:Name ="createAndEnter" TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="2" Grid.ColumnSpan="3">Name</TextBlock>
+                    <TextBox x:Name="holderName" Margin="-5,-40,5,53"  Grid.ColumnSpan="3"/>
                     <Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create new account" Width="162"  Height="48" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="8,20,0,0" Click="Button_Click"/>
-                    <Button Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-127,28,95,60" Grid.RowSpan="2" Click="Button_Click_1"/>
+                    <Button x:Name="Enter" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-127,28,95,60" Grid.RowSpan="2" Click="Button_Click_1"/>
                 </Grid>
 
             </StackPanel>
