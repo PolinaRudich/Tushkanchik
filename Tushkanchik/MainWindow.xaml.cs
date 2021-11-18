@@ -27,15 +27,46 @@ namespace Tushkanchik
     public partial class MainWindow : Window
     {
         private const string _UsersPath = "C:/Users/Asus/source/repos/Tushkanchik/json/users.txt";
+        public List<User> _users;
         public MainWindow()
         {
-            InitializeComponent();
 
+            _users = GetUsersFromJSON();
+            InitializeComponent();
+            FillUsersComboBox();
+
+
+        }
+        public List<User> GetUsersFromJSON()
+        {
+            StreamReader reader = new StreamReader(_UsersPath);
+            // открыть поток для чтения 
+            string json = reader.ReadToEnd();
+            reader.Close();
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(json);
+            if (users is null)
+            {
+                users = new List<User>();
+                //если изначально пустой файл мы делвем чтоб он был равен не нул а пустой список 
+            }
+            return users;
+        }
+        public void FillUsersComboBox()
+        {
+            foreach (User user in _users)
+            {
+                usersList.Items.Add(user.GetName());
+            }
         }
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-           
+            //парсинг превращаем текст в список юзеров
+
+            foreach (User user in _users)
+            {
+                usersList.Items.Add(user.GetName());
+            }
 
         }
 
@@ -50,33 +81,20 @@ namespace Tushkanchik
             {
                 holderName.Background = Brushes.Transparent;
                 User user = new User(name);
-                StreamReader reader = new StreamReader(_UsersPath);
-                // открыть поток для чтения 
-                string json = reader.ReadToEnd();
-                reader.Close();
-               
-                List<User> users = JsonConvert.DeserializeObject<List<User>>(json);
-                
-                //парсинг превращаем текст в список юзеров
-                if (users is null)
-                {
-                    users = new List<User>();
-                    //если изначально пустой файл мы делвем чтоб он был равен не нул а пустой список 
-                }
-                if (user.IsIn(users))
+                if (user.IsIn(_users))
                 {
                     MessageBox.Show("Такой пользователь уже существует");
                 }
                 else
                 {
                    
-                   users.Add(user);
+                   _users.Add(user);
 
                     //foreach (User u in users)
                     //{
                     //    Trace.WriteLine("Name: " + u.GetName());
                     //}
-                    string converted = JsonConvert.SerializeObject(users);
+                    string converted = JsonConvert.SerializeObject(_users);
                     // парсинг в строку чтоб записать тест в файл 
                     //Trace.WriteLine(converted);
                     File.WriteAllText(_UsersPath, converted);

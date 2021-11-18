@@ -60,6 +60,5 @@ namespace Tushkanchik
         {
             _holders.Remove(user);
         }
-
     }
 }
