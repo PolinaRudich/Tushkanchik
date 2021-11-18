@@ -18,6 +18,8 @@ using System.IO;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Diagnostics;
+using Tushkanchik.Transaction.Categories;
+using Tushkanchik.Transaction;
 
 namespace Tushkanchik
 {
@@ -61,7 +63,8 @@ namespace Tushkanchik
                 if (users is null)
                 {
                     users = new List<User>();
-                    //если изначально пустой файл мы делвем чтоб он был равен не нул а пустой список 
+                    //если изначально пустой файл мы делвем чтоб он
+                    //был равен не нул а пустой список 
                 }
                 if (user.IsIn(users))
                 {

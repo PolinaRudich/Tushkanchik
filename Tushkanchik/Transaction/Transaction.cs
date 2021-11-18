@@ -4,31 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik
+namespace Tushkanchik.Transaction
 {
     public abstract class Transaction
     {
         private decimal _amount;
-        private DateTime?  _date;
-        private int? _card;
+        private DateTime  _date;
+        private int _card;
         private string _category;
-        public Transaction()
-        {
-            _amount = 0;
-            _date = null;
-           
-            _card = null;
-            _category = null;
-        }
-        public Transaction(decimal amount, int date, int card, string category)
+        // Если надо вводить старую транзакцию,
+        // вынести создание _date из конструктора
+        // и добавить его в параметры метода
+        public Transaction(decimal amount, int card, string category)
         {
             _amount = amount;
-            _date = date;
-           
+            _date = new DateTime();
             _card = card;
             _category = category;
         }
+        public decimal GetAmount()
+        {
+            return _amount;
+        }
+        public int GetCard()
+        {
+            return _card;
+        }
+        public string GetCategory()
+        {
+            return _category;
+        }
+        public DateTime GetDate()
+        {
+            return _date;
+        }
 
-        
     }
 }
