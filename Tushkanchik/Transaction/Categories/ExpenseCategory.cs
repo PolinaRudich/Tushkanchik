@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik
+namespace Tushkanchik.Transaction.Categories
 {
-     public class User
+    public class ExpenseCategory
     {
-
         public string Name { get; set; }
-       
-       
     }
 }

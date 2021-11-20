@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-     public class User
+    class Storage
     {
 
-        public string Name { get; set; }
-       
-       
     }
 }

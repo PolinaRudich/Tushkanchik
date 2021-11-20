@@ -4,31 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik
+namespace Tushkanchik.Transaction
 {
+
     public abstract class Transaction
     {
-        private decimal _amount;
-        private int _date;
-        private int? _card;
-        private string _category;
-        public Transaction()
-        {
-            _amount = 0;
-            _date = 0;
-           
-            _card = null;
-            _category = null;
-        }
-        public Transaction(decimal amount, int date, int card, string category)
-        {
-            _amount = amount;
-            _date = date;
-           
-            _card = card;
-            _category = category;
-        }
+        public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
+        //TODO: change int? to Card
+        public int? Card { get; set; }
 
-        
+        public string Comment { get; set; }
+
+        public Transaction(decimal amount, DateTime date, int card)
+        {
+            Amount = amount;
+            Date = date;
+            Card = card;
+        }
     }
 }

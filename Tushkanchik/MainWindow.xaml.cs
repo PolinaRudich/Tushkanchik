@@ -15,80 +15,133 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+//using Newtonsoft.Json;
 using System.Diagnostics;
+using Tushkanchik.Transaction;
+using Tushkanchik.Transaction.Categories;
 
 namespace Tushkanchik
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainPage.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string _UsersPath = "C:/Users/Asus/OneDrive/Документы/users.txt";
+        //AddUser DeleteUser при создании 2 юзера всплывает сообщение учитывать его в оьщей
+        //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
+
         public MainWindow()
         {
             InitializeComponent();
-
+            _users = GetUsersFromJSON();
+            _incomeCategory = GetIncomeCategoriesFromJSON();
+            FillUsersComboBox();
         }
+        private const string _UsersPath = "./users.txt";
+        private const string _IncomeCategoriesPath = "C:/Users/Asus/source/repos/Tushkanchik/json/Incomecategories.txt";
+        
+        public List<User> _users;
+        public List<IncomeCategory> _incomeCategory;
+       
+        public string _userName;
+
+       public List<IncomeCategory> GetIncomeCategoriesFromJSON()
+        {
+            StreamReader reader = new StreamReader(_IncomeCategoriesPath);
+            // открыть поток для чтения 
+            string json = reader.ReadToEnd();
+            reader.Close();
+            List<Transaction.Categories.IncomeCategory> incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
+            if (incomeCategory is null)
+            {
+                incomeCategory = new List<Transaction.Categories.IncomeCategory>();
+                //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
+            }
+            return incomeCategory;
+        }
+        public List<User> GetUsersFromJSON()
+        {
+            string json = File.ReadAllText(_UsersPath);
+            List<User> users = JsonSerializer.Deserialize<List<User>>(json);
+            if (users is null)
+            {
+                users = new List<User>();
+                //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
+            }
+            return users;
+        }
+      
+        public void FillUsersComboBox()
+        {
+            foreach (User user in _users)
+            {
+                ComboBoxUsersList.Items.Add(user.Name);
+            }
+        }
+        //public void FillIncomeCategoriesComboBox()
+        //{
+        //    foreach (IncomeCategories incomeCategory in _incomeCategory)
+        //    {
+        //        usersList.Items.Add(incomeCategory.GetName());
+        //    }
+        //}
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
+            //парсинг превращаем текст в список юзеров
+
+            foreach (User user in _users)
+            {
+                ComboBoxUsersList.Items.Add(user.Name);
+            }
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonCreateUser_Click(object sender, RoutedEventArgs e)
         {
-            string name = @holderName.Text;
-            if (name.Length==0)
+            string name = holderName.Text;
+            if (name.Length == 0)
             {
                 holderName.ToolTip = "";
             }
             else
             {
                 holderName.Background = Brushes.Transparent;
-                User user = new User(name);
-                StreamReader reader = new StreamReader(_UsersPath);
-                // открыть поток для чтения 
-                string json = reader.ReadToEnd();
-                reader.Close();
-                
-                List<User> users = JsonConvert.DeserializeObject<List<User>>(json);
-                //парсинг превращаем текст в список юзеров
-                if (users is null)
-                {
-                    users = new List<User>();
-                    //если изначально пустой файл мы делвем чтоб он был равен не нул а пустой список 
-                }
-                if (user.IsIn(users))
+                User user = new User() { Name = name };
+                if ( _users.Contains(user))
                 {
                     MessageBox.Show("Такой пользователь уже существует");
                 }
                 else
                 {
-                    users.Add(user);
 
-                    //foreach (User u in users)
-                    //{
-                    //    Trace.WriteLine("Name: " + u.GetName());
-                    //}
-                    string converted = JsonConvert.SerializeObject(users);
+                    _users.Add(user);
+
+                    string converted = JsonSerializer.Serialize(_users);
                     // парсинг в строку чтоб записать тест в файл 
                     //Trace.WriteLine(converted);
                     File.WriteAllText(_UsersPath, converted);
-
-                    MainPage mainPage = new MainPage();
-                    mainPage.Show();
+                    ComboBoxUsersList.Items.Add(user.Name);
+                    TabItemMainTab.IsSelected = true;
+                    _userName = holderName.Text;
+                    nameOfUser.Content = _userName;
+                    entertab.IsEnabled = false;
                 }
-                
+
             }
-            
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-           
+            if(!string.IsNullOrWhiteSpace(ComboBoxUsersList.Text))
+            {
+                TabItemMainTab.IsSelected = true;
+            }
+            _userName = ComboBoxUsersList.Text;
+            nameOfUser.Content = _userName;
+            entertab.IsEnabled = false;
         }
     }
 }
+
