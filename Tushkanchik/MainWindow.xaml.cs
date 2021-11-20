@@ -44,7 +44,7 @@ namespace Tushkanchik
             ComboBoxUsersList.ItemsSource = _users;
           
             _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
-            ComboBoxCategoriesList.ItemsSource = _incomeCategories;
+           
         }
 
 
@@ -140,6 +140,11 @@ namespace Tushkanchik
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
