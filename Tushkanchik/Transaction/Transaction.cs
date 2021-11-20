@@ -11,7 +11,7 @@ namespace Tushkanchik.Transaction
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        //TODO: change int? to Card
+        //`TODO: change int? to Card
         public int? Card { get; set; }
 
         public string Comment { get; set; }

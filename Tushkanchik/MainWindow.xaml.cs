@@ -19,6 +19,7 @@ using System.IO;
 using System.Diagnostics;
 using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
+using System.Collections.ObjectModel;
 
 namespace Tushkanchik
 {
@@ -30,37 +31,56 @@ namespace Tushkanchik
         //AddUser DeleteUser при создании 2 юзера всплывает сообщение учитывать его в оьщей
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
 
+        private const string _IncomeCategoriesPath = "./Incomecategories.txt";
+        private const string _UsersPath = "./users.txt";
+
+        private ObservableCollection<User> _users;
+        private ObservableCollection<IncomeCategory> _incomeCategories;
+
         public MainWindow()
         {
             InitializeComponent();
-            _users = GetUsersFromJSON();
-            _incomeCategory = GetIncomeCategoriesFromJSON();
-            FillUsersComboBox();
+            _users = new ObservableCollection<User>(GetUsersFromJSON());
+            ComboBoxUsersList.ItemsSource = _users;
+          
+            _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
+           
         }
-        private const string _UsersPath = "./users.txt";
-        private const string _IncomeCategoriesPath = "C:/Users/Asus/source/repos/Tushkanchik/json/Incomecategories.txt";
-        
-        public List<User> _users;
-        public List<IncomeCategory> _incomeCategory;
-       
-        public string _userName;
 
-       public List<IncomeCategory> GetIncomeCategoriesFromJSON()
+
+        public List<IncomeCategory> GetIncomeCategoriesFromJSON()
         {
-            StreamReader reader = new StreamReader(_IncomeCategoriesPath);
-            // открыть поток для чтения 
-            string json = reader.ReadToEnd();
-            reader.Close();
-            List<Transaction.Categories.IncomeCategory> incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
-            if (incomeCategory is null)
+            if (!File.Exists(_IncomeCategoriesPath))
             {
-                incomeCategory = new List<Transaction.Categories.IncomeCategory>();
+                return new List<IncomeCategory>();
+            }
+            string json = File.ReadAllText(_IncomeCategoriesPath);
+            List<IncomeCategory> categories = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
+            if (categories is null)
+            {
+                categories = new List<IncomeCategory>();
                 //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
             }
-            return incomeCategory;
+            return categories;
+            //StreamReader reader = new StreamReader(_IncomeCategoriesPath);
+            // открыть поток для чтения 
+            //string json = reader.ReadToEnd();
+            //reader.Close();
+            //List<IncomeCategory> incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
+            //if (incomeCategory is null)
+            //{
+            //    incomeCategory = new List<IncomeCategory>();
+            //    //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
+            //}
+            //return incomeCategory;
         }
         public List<User> GetUsersFromJSON()
         {
+            if (!File.Exists(_UsersPath))
+            {
+                return new List<User>();
+            }
+
             string json = File.ReadAllText(_UsersPath);
             List<User> users = JsonSerializer.Deserialize<List<User>>(json);
             if (users is null)
@@ -70,77 +90,63 @@ namespace Tushkanchik
             }
             return users;
         }
-      
-        public void FillUsersComboBox()
-        {
-            foreach (User user in _users)
-            {
-                ComboBoxUsersList.Items.Add(user.Name);
-            }
-        }
-        //public void FillIncomeCategoriesComboBox()
-        //{
-        //    foreach (IncomeCategories incomeCategory in _incomeCategory)
-        //    {
-        //        usersList.Items.Add(incomeCategory.GetName());
-        //    }
-        //}
 
-        private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            //парсинг превращаем текст в список юзеров
-
-            foreach (User user in _users)
-            {
-                ComboBoxUsersList.Items.Add(user.Name);
-            }
-
-        }
 
         private void ButtonCreateUser_Click(object sender, RoutedEventArgs e)
         {
-            string name = holderName.Text;
-            if (name.Length == 0)
+            string name = holderName.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
             {
-                holderName.ToolTip = "";
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            holderName.Background = Brushes.Transparent;
+            User user = new User() { Name = name };
+            if (_users.Contains(user))
             {
-                holderName.Background = Brushes.Transparent;
-                User user = new User() { Name = name };
-                if ( _users.Contains(user))
-                {
-                    MessageBox.Show("Такой пользователь уже существует");
-                }
-                else
-                {
-
-                    _users.Add(user);
-
-                    string converted = JsonSerializer.Serialize(_users);
-                    // парсинг в строку чтоб записать тест в файл 
-                    //Trace.WriteLine(converted);
-                    File.WriteAllText(_UsersPath, converted);
-                    ComboBoxUsersList.Items.Add(user.Name);
-                    TabItemMainTab.IsSelected = true;
-                    _userName = holderName.Text;
-                    nameOfUser.Content = _userName;
-                    entertab.IsEnabled = false;
-                }
-
+                MessageBox.Show("Такой пользователь уже существует");
+                return;
             }
+
+
+            _users.Add(user);
+
+            string converted = JsonSerializer.Serialize(_users);
+            File.WriteAllText(_UsersPath, converted);
+            _users.Add(user);
+
+            TabItemMainTab.IsSelected = true;
+            nameOfUser.Content = name;
+            entertab.IsEnabled = false;
+        }
+
+        private void ButtonEnter_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboBoxUsersList.SelectedItem == null)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var name = ((User)ComboBoxUsersList.SelectedItem).Name;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            nameOfUser.Content = name;
+            TabItemMainTab.IsSelected = true;
+            entertab.IsEnabled = false;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!string.IsNullOrWhiteSpace(ComboBoxUsersList.Text))
-            {
-                TabItemMainTab.IsSelected = true;
-            }
-            _userName = ComboBoxUsersList.Text;
-            nameOfUser.Content = _userName;
-            entertab.IsEnabled = false;
+
         }
     }
 }
