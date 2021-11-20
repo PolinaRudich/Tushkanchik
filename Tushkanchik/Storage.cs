@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik.Transaction.Categories
+namespace Tushkanchik
 {
-    public class ExpenseCategories: Categories
+    class Storage
     {
+
     }
 }

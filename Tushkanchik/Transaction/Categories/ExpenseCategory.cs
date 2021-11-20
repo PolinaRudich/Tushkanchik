@@ -4,15 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik
+namespace Tushkanchik.Transaction.Categories
 {
-    class IncomeCategory
+    public class ExpenseCategory
     {
-        enum Category
-        {
-            Salary,
-            Unknow
-        }
-
+        public string Name { get; set; }
     }
 }
