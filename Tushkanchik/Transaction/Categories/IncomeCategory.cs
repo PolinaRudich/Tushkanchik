@@ -6,5 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik.Transaction.Categories
 {
-    public class IncomeCategories : Categories { }
+    public class IncomeCategory 
+    {
+        public string Name { get; set; }
+       
+    }
 }
