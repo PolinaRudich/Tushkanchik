@@ -13,15 +13,6 @@ namespace Tushkanchik
         public decimal Balance { get; set; }
         public string Name { get; set; }
 
-
-       
-        //public Card( string name, User holder, decimal balance)
-        //{
-        //    _balance = balance;
-        //    _name = name;
-        //    _holders = new List<User>(); 
-        //    _holders.Add(holder);
-        //}
         public Card(List<User> holders, decimal balance, string name)
         {
             Holders = holders;
