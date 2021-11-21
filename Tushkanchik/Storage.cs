@@ -6,8 +6,23 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-    class Storage
+    public sealed class Storage
     {
+        public List<Card> Cards { get; set; }
+        public List<User> Users { get; set; }
+        
+        
+        private static Storage _storage;
 
+        private Storage() { }
+
+        public static Storage GetInstance()
+        {
+            if (_storage == null)
+            {
+                _storage = new Storage();
+            }
+            return _storage;
+        }
     }
 }
