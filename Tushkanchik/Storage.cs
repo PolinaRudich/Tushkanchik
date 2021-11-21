@@ -10,7 +10,7 @@ namespace Tushkanchik
     {
         public List<Card> Cards { get; set; }
         public List<User> Users { get; set; }
-        
+       //cохрание категорий
         
         private static Storage _storage;
 
