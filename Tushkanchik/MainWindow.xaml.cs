@@ -21,6 +21,7 @@ using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
 
+
 namespace Tushkanchik
 {
     /// <summary>
@@ -30,65 +31,101 @@ namespace Tushkanchik
     {
         //AddUser DeleteUser при создании 2 юзера всплывает сообщение учитывать его в оьщей
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
-
-        private const string _IncomeCategoriesPath = "./Incomecategories.txt";
-        private const string _UsersPath = "./users.txt";
-
+       
+        private const string IncomeCategoriesPath = "./Incomecategories.txt";
+        public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
+        public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
+        private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
+        private User User { get; set; }
         private ObservableCollection<IncomeCategory> _incomeCategories;
+        private Storage _storage;
+        public class CardForView
+        {
+            public string NamePlusBalance { get; set; }
+            public Card Card { get; set; }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
+            _storage = Storage.GetInstance();
+
             _users = new ObservableCollection<User>(GetUsersFromJSON());
             ComboBoxUsersList.ItemsSource = _users;
-          
-            _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
+
+            _cardsForView = new ObservableCollection<CardForView>();
+            ComboBoxMoney.ItemsSource = _cardsForView;
+
+            var cards = GetCardsFromJSON();
+            foreach(var card in cards)
+            {
+                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
+                _cardsForView.Add(cardForView);
+            }
+             _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
            
         }
 
 
         public List<IncomeCategory> GetIncomeCategoriesFromJSON()
         {
-            if (!File.Exists(_IncomeCategoriesPath))
+            if (!File.Exists(IncomeCategoriesPath))
             {
                 return new List<IncomeCategory>();
             }
-            string json = File.ReadAllText(_IncomeCategoriesPath);
+            string json = File.ReadAllText(IncomeCategoriesPath);
             List<IncomeCategory> categories = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
             if (categories is null)
             {
                 categories = new List<IncomeCategory>();
-                //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
+                
             }
             return categories;
-            //StreamReader reader = new StreamReader(_IncomeCategoriesPath);
-            // открыть поток для чтения 
-            //string json = reader.ReadToEnd();
-            //reader.Close();
-            //List<IncomeCategory> incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
-            //if (incomeCategory is null)
-            //{
-            //    incomeCategory = new List<IncomeCategory>();
-            //    //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
-            //}
-            //return incomeCategory;
+           
         }
         public List<User> GetUsersFromJSON()
         {
-            if (!File.Exists(_UsersPath))
+            if (!File.Exists(UsersPath))
             {
+                FileStream fs = File.Create(UsersPath);
+                fs.Close();
                 return new List<User>();
             }
-
-            string json = File.ReadAllText(_UsersPath);
-            List<User> users = JsonSerializer.Deserialize<List<User>>(json);
+            List<User> users = new List<User>();
+            string json = File.ReadAllText(UsersPath);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                users = new List<User>();
+            }
             if (users is null)
             {
                 users = new List<User>();
-                //если изначально пустой файл мы делвем чтоб он был равен не null а пустой список 
+            } else
+            {
+                users = JsonSerializer.Deserialize<List<User>>(json);
             }
             return users;
+        }
+        public List<Card> GetCardsFromJSON()
+        {
+            if (!File.Exists(CardsPath))
+            {
+                FileStream fs = File.Create(CardsPath);
+                fs.Close();
+                return new List<Card>();
+            }
+            List<Card> cards = new List<Card>();
+            string json = File.ReadAllText(CardsPath);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                cards = new List<Card>();
+            }
+            else
+            {
+                cards = JsonSerializer.Deserialize<List<Card>>(json);
+            }
+            return cards;
         }
 
 
@@ -102,7 +139,7 @@ namespace Tushkanchik
             }
 
             holderName.Background = Brushes.Transparent;
-            User user = new User() { Name = name };
+            User user = new User(name) { Name = name };
             if (_users.Contains(user))
             {
                 MessageBox.Show("Такой пользователь уже существует");
@@ -113,8 +150,7 @@ namespace Tushkanchik
             _users.Add(user);
 
             string converted = JsonSerializer.Serialize(_users);
-            File.WriteAllText(_UsersPath, converted);
-            _users.Add(user);
+            File.WriteAllText(UsersPath, converted);
 
             TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
@@ -128,15 +164,16 @@ namespace Tushkanchik
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            var name = ((User)ComboBoxUsersList.SelectedItem).Name;
-            if (!string.IsNullOrWhiteSpace(name))
+            User = (User)ComboBoxUsersList.SelectedItem;
+            if (string.IsNullOrWhiteSpace(User.Name))
             {
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            nameOfUser.Content = name;
+            nameOfUser.Content = User.Name;
             TabItemMainTab.IsSelected = true;
             entertab.IsEnabled = false;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -146,6 +183,51 @@ namespace Tushkanchik
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void ButtonAddNewCard_Click(object sender, RoutedEventArgs e)
+        {
+            string name = cardName.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string cardBalance = Cardbalance.Text.Trim();
+            if (string.IsNullOrWhiteSpace(cardBalance))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            //TODO вынести в отдельный метод
+            decimal balance;
+            bool isNumber = decimal.TryParse(Cardbalance.Text.Trim(),  out balance);
+            if (!isNumber)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            //TODO разобраться с листами юзеров и тд
+            List<User> cardUsers = new List<User>();
+            cardUsers.Add(User);
+
+            Card card = new Card(cardUsers, balance, name);
+            _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
+
+            List<Card> cards = new List<Card>();
+            foreach(var cardForView in _cardsForView)
+            {
+                cards.Add(cardForView.Card);
+            }
+
+            string converted = JsonSerializer.Serialize(cards);
+            File.WriteAllText(CardsPath, converted);
 
         }
     }
