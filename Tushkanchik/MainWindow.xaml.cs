@@ -40,11 +40,7 @@ namespace Tushkanchik
         private User User { get; set; }
         private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
-        public class CardForView
-        {
-            public string NamePlusBalance { get; set; }
-            public Card Card { get; set; }
-        }
+       
 
         public MainWindow()
         {

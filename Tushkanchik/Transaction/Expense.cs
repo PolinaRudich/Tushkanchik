@@ -11,8 +11,8 @@ namespace Tushkanchik.Transaction
     {
         public ExpenseCategory ExpenseCategory { get; set; }
 
-        public Expense(decimal amount, DateTime date, int card)
-            : base(amount, date, card)
+        public Expense(decimal amount, DateTime date, Card card, string comment)
+            : base(amount, date, card,comment)
         {
 
         }
