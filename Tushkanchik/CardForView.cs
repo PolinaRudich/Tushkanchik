@@ -13,4 +13,5 @@ namespace Tushkanchik
             public Card Card { get; set; }
         }
     
+    
 }

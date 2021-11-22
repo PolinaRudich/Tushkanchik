@@ -18,5 +18,6 @@ namespace Tushkanchik
             Balance = balance;
             Name = name;
         }
+        
     }
 }

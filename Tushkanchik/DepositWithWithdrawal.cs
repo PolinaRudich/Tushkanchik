@@ -11,7 +11,7 @@ namespace Tushkanchik
 
         public bool withdrawal { get; set; }
 
-        public DepositeWithWithdrawal(bool Withdrawal, bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate) 
+        public DepositWithWithdrawal(bool Withdrawal, bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate) 
             : base(RepLacement, Percent, StartDate, FinishDate)
 
         {

@@ -7,7 +7,7 @@ using Tushkanchik.Transaction.Categories;
 
 namespace Tushkanchik.Transaction
 {
-    class Expense : Transaction
+     public class Expense : Transaction
     {
         public ExpenseCategory ExpenseCategory { get; set; }
 

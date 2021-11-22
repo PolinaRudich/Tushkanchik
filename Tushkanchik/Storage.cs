@@ -17,13 +17,13 @@ namespace Tushkanchik
         public List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal { get; set; }
         public List<DepositWithWithdrawal> DepositWithWithdrawal { get; set; }
         public List<Expense> Expense { get; set; }
-        public List<Income> Income{ get; set; }
+        public List<Income> Income { get; set; }
         public List<ExpenseCategory> ExpenseCategory { get; set; }
         public List<IncomeCategory> IncomeCategory { get; set; }
         //cохрание категорий
 
         private static Storage _storage;
-        public  string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
+        public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
         public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
         public string DepositeWithoutWithdrawalPath = Directory.GetCurrentDirectory() + "/json/depositeWithoutWithdrawal.txt";
         public string DepositWithWithdrawalPath = Directory.GetCurrentDirectory() + "/json/depositWithWithdrawal.txt";
@@ -55,6 +55,7 @@ namespace Tushkanchik
             {
                 users = JsonSerializer.Deserialize<List<User>>(json);
             }
+            Users = users;
             return users;
         }
         public List<Card> GetCardsFromJSON()
@@ -75,6 +76,7 @@ namespace Tushkanchik
             {
                 cards = JsonSerializer.Deserialize<List<Card>>(json);
             }
+            Cards = cards;
             return cards;
         }
         public List<DepositeWithoutWithdrawal> GetDepositeWithoutWithdrawalFromJSON()
@@ -85,17 +87,18 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<DepositeWithoutWithdrawal>();
             }
-            List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+            List<DepositeWithoutWithdrawal> depositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
             string json = File.ReadAllText(DepositeWithoutWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+                depositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
             }
             else
             {
-                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<DepositeWithoutWithdrawal>>(json);
+                depositeWithoutWithdrawal = JsonSerializer.Deserialize<List<DepositeWithoutWithdrawal>>(json);
             }
-            return DepositeWithoutWithdrawal;
+            DepositeWithoutWithdrawal = depositeWithoutWithdrawal;
+            return depositeWithoutWithdrawal;
         }
         public List<DepositWithWithdrawal> DepositWithWithdrawalFromJSON()
         {
@@ -105,17 +108,18 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<DepositWithWithdrawal>();
             }
-            List<DepositWithWithdrawal> DepositWithWithdrawal = new List<DepositWithWithdrawal>();
+            List<DepositWithWithdrawal> depositWithWithdrawal = new List<DepositWithWithdrawal>();
             string json = File.ReadAllText(DepositWithWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositWithWithdrawal = new List<DepositWithWithdrawal>();
+                depositWithWithdrawal = new List<DepositWithWithdrawal>();
             }
             else
             {
-                DepositWithWithdrawal = JsonSerializer.Deserialize<List<DepositWithWithdrawal>>(json);
+                depositWithWithdrawal = JsonSerializer.Deserialize<List<DepositWithWithdrawal>>(json);
             }
-            return DepositWithWithdrawal;
+            DepositWithWithdrawal = depositWithWithdrawal;
+            return depositWithWithdrawal;
         }
         public List<Expense> ExpenseFromJSON()
         {
@@ -125,37 +129,39 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<Expense>();
             }
-            List<Expense> Expense = new List<Expense>();
+            List<Expense> expense = new List<Expense>();
             string json = File.ReadAllText(ExpensePath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                Expense = new List<Expense>();
+                expense = new List<Expense>();
             }
             else
             {
-                Expense = JsonSerializer.Deserialize<List<Expense>>(json);
+                expense = JsonSerializer.Deserialize<List<Expense>>(json);
             }
-            return Expense;
+            Expense = expense;
+            return expense;
         }
         public List<Income> IncomeFromJSON()
         {
-            if (!File.Exists(ExpensePath))
+            if (!File.Exists(IncomePath))
             {
                 FileStream fs = File.Create(IncomePath);
                 fs.Close();
                 return new List<Income>();
             }
-            List<Income> Expense = new List<Income>();
+            List<Income> income = new List<Income>();
             string json = File.ReadAllText(IncomePath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                Income = new List<Income>();
+                income = new List<Income>();
             }
             else
             {
-                Income = JsonSerializer.Deserialize<List<Income>>(json);
+                income = JsonSerializer.Deserialize<List<Income>>(json);
             }
-            return Income;
+            Income = income;
+            return income;
         }
         public List<ExpenseCategory> ExpenseCategoryFromJSON()
         {
@@ -165,17 +171,18 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<ExpenseCategory>();
             }
-            List<ExpenseCategory> ExpenseCategory = new List<ExpenseCategory>();
+            List<ExpenseCategory> expenseCategory = new List<ExpenseCategory>();
             string json = File.ReadAllText(ExpenseCategoryPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                ExpenseCategory = new List<ExpenseCategory>();
+                expenseCategory = new List<ExpenseCategory>();
             }
             else
             {
-                ExpenseCategory = JsonSerializer.Deserialize<List<ExpenseCategory>>(json);
+                expenseCategory = JsonSerializer.Deserialize<List<ExpenseCategory>>(json);
             }
-            return ExpenseCategory;
+            ExpenseCategory = expenseCategory;
+            return expenseCategory;
         }
         public List<IncomeCategory> IncomeCategoryFromJSON()
         {
@@ -185,19 +192,30 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<IncomeCategory>();
             }
-            List<IncomeCategory> IncomeCategory = new List<IncomeCategory>();
+            List<IncomeCategory> incomeCategory = new List<IncomeCategory>();
             string json = File.ReadAllText(ExpenseCategoryPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                IncomeCategory = new List<IncomeCategory>();
+                incomeCategory = new List<IncomeCategory>();
             }
             else
             {
-                IncomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
+                incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
             }
-            return IncomeCategory;
+            IncomeCategory = incomeCategory;
+            return incomeCategory;
         }
-        private Storage() { }
+        private Storage()
+        {
+            GetUsersFromJSON();
+            GetCardsFromJSON();
+            GetDepositeWithoutWithdrawalFromJSON();
+            DepositWithWithdrawalFromJSON();
+            ExpenseFromJSON();
+            IncomeFromJSON();
+            ExpenseCategoryFromJSON();
+            IncomeCategoryFromJSON();
+        }
 
         public static Storage GetInstance()
         {
@@ -207,6 +225,6 @@ namespace Tushkanchik
             }
             return _storage;
         }
-        public 
     }
+
 }
