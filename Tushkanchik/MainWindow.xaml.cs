@@ -34,8 +34,8 @@ namespace Tushkanchik
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
 
         private const string IncomeCategoriesPath = "./Incomecategories.txt";
-        public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
-        public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
+       //public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
+      //public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private ObservableCollection<Card> _cards;
@@ -96,7 +96,7 @@ namespace Tushkanchik
             _users.Add(user);
 
             string converted = JsonSerializer.Serialize(_users);
-            File.WriteAllText(UsersPath, converted);
+            File.WriteAllText(_storage.UsersPath, converted);
 
             TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
@@ -182,7 +182,7 @@ namespace Tushkanchik
             }
 
             string converted = JsonSerializer.Serialize(cards);
-            File.WriteAllText(CardsPath, converted);
+            File.WriteAllText(_storage.CardsPath, converted);
 
         }
 

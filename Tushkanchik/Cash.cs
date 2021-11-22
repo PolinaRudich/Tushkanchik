@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-    class Cashcs
+   public  class Cash
     {
+        public decimal Balance { get; set; }
+        public Cash (decimal balance)
+        {
+            Balance = balance;
+        }
+
     }
 }
