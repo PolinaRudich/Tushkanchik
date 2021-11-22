@@ -54,30 +54,38 @@
 
                     <ComboBox x:Name="ComboBoxMoney" DisplayMemberPath="NamePlusBalance" Margin="19,63,634,305">
                     </ComboBox>
-                            <Label Content="Кошелек" HorizontalAlignment="Left" Height="42" Margin="10,16,0,0" VerticalAlignment="Top" Width="106" FontSize="24" Grid.ColumnSpan="4"/>
+                    <Label Content="Кошелек" HorizontalAlignment="Left" Height="42" Margin="10,16,0,0" VerticalAlignment="Top" Width="106" FontSize="24" Grid.ColumnSpan="4"/>
                     <Label Content="Карта" HorizontalAlignment="Left" Height="27" Margin="200,51,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
-                    <Button Content="Button" Margin="246,227,445,139" Click="ButtonAddNewCard_Click"/>
-                    <TextBox x:Name="Cardbalance" TextWrapping="Wrap" Margin="246,168,446,199"/>
+                    <Button Content="Добавить карту" Margin="246,231,426,135" Click="ButtonAddNewCard_Click" FontSize="11"/>
+                    <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="179,178,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
+                    <TextBox x:Name="Cardbalance" TextWrapping="Wrap" Margin="246,172,436,196"/>
                     <Label Content="Вклад" HorizontalAlignment="Left" Height="27" Margin="476,47,0,0" VerticalAlignment="Top" Width="54" FontWeight="Bold"/>
-                    <Button Content="Button" Margin="528,227,116,139"/>
+                    <Button Content="Добавить вклад" Margin="536,280,124,86"/>
 
                     <TextBlock x:Name="userName" TextWrapping="Wrap" Margin="91,331,637,40" RenderTransformOrigin="0.5,0.5">
 
                     </TextBlock>
                     <TextBox  x:Name="cardName" Margin="246,48,446,324" TextChanged="TextBox_TextChanged"/>
                     <Label Content="Кэшбэк" HorizontalAlignment="Left" Height="27" Margin="192,88,0,0" VerticalAlignment="Top" Width="54" FontWeight="Bold" RenderTransformOrigin="0.471,0.467"/>
-                    <Label Content="Процент" HorizontalAlignment="Left" Height="27" Margin="179,128,0,0" VerticalAlignment="Top" Width="65" FontWeight="Bold"/>
-                    <TextBox TextWrapping="Wrap" Margin="535,45,123,315"/>
+
+                    <TextBox TextWrapping="Wrap" Margin="535,45,126,320"/>
                     <ComboBox Margin="536,123,124,243"/>
-                    <Label Content="Тип" HorizontalAlignment="Left" Height="27" Margin="470,126,0,0" VerticalAlignment="Top" Width="54" FontWeight="Bold"/>
-                    <TextBox TextWrapping="Wrap" Margin="246,139,446,240"/>
+                    <Label Content="Тип" HorizontalAlignment="Left" Height="27" Margin="477,134,0,0" VerticalAlignment="Top" Width="54" FontWeight="Bold"/>
                     <TextBox TextWrapping="Wrap" Margin="535,83,123,285"/>
-                    <Label Content="Процент" HorizontalAlignment="Left" Height="27" Margin="470,78,0,0" VerticalAlignment="Top" Width="65" FontWeight="Bold"/>
+                    <Label Content="Процент" HorizontalAlignment="Left" Height="27" Margin="464,90,0,0" VerticalAlignment="Top" Width="66" FontWeight="Bold"/>
                     <Button Content="Выход" Margin="620,2,41,364"/>
-                    <TextBlock TextWrapping="Wrap" Margin="19,330,740,41"><Run Language="ru-ru" Text="Баланс"/><Run Text=":"/></TextBlock>
                     <TextBox TextWrapping="Wrap" Margin="246,91,446,281"/>
-                    <TextBox TextWrapping="Wrap" Margin="534,169,124,199"/>
+                    <TextBox TextWrapping="Wrap" Margin="531,228,119,140"/>
                     <Label x:Name="nameOfUser" Content="" HorizontalAlignment="Left" Height="28" Margin="126,18,0,0" VerticalAlignment="Top" Width="106" FontSize="15"/>
+                    <Label Content="Сумма" HorizontalAlignment="Left" Height="27" Margin="480,231,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
+                    <DatePicker Margin="536,195,121,0" VerticalAlignment="Top" Height="21"/>
+                    <Label Content="Дата выплаты" HorizontalAlignment="Left" Height="27" Margin="436,192,0,0" VerticalAlignment="Top" Width="94" FontWeight="Bold"/>
+                    <Label Content="Дата выплаты кэшбэка" HorizontalAlignment="Left" Height="27" Margin="98,144,0,0" VerticalAlignment="Top" Width="148" FontWeight="Bold"/>
+                    <DatePicker Margin="246,140,439,0" VerticalAlignment="Top" Height="21"/>
+                    <Label Content="Карта" HorizontalAlignment="Left" Height="27" Margin="40,314,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
+                    <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="19,346,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
+                    <TextBox x:Name="Cardbalance_Copy" TextWrapping="Wrap" Margin="70,341,660,27"/>
+                    <Button Content="Добавить наличные" Margin="163,342,489,24" Click="ButtonAddNewCard_Click" FontSize="11"/>
 
                 </Grid>
             </TabItem>
@@ -101,7 +109,7 @@
                     <Label Content="Комментарий" HorizontalAlignment="Left" Height="28" Margin="10,146,0,0" VerticalAlignment="Top" Width="134" FontSize="15" Grid.ColumnSpan="2"/>
                     <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="10,106,0,0" VerticalAlignment="Top" Width="106" FontSize="15" Grid.ColumnSpan="2"/>
                     <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1" SelectionChanged="TabControl_SelectionChanged">
-                        <TabItem Header="TabItem">
+                        <TabItem Header="Разовые доходы">
                             <DataGrid x:Name="IncomeOnceInfo">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Дата"/>
@@ -113,13 +121,13 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem>
-                        <TabItem Header="TabItem">
+                        <TabItem Header="Фиксированные доходы">
                             <DataGrid x:Name="IncomeInfo">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Дата"/>
                                     <DataGridTextColumn Header="Категория"/>
                                     <DataGridTextColumn Header="Кошелек"/>
-                                    <DataGridTextColumn Header="Комментарий"/>
+
                                     <DataGridTextColumn Header="Суммма"/>
                                     <DataGridTextColumn Header="Периодичность"/>
                                 </DataGrid.Columns>
@@ -153,7 +161,7 @@
                     <Label Content="Комментарий" HorizontalAlignment="Left" Height="28" Margin="10,146,0,0" VerticalAlignment="Top" Width="134" FontSize="15" Grid.ColumnSpan="2"/>
                     <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="10,106,0,0" VerticalAlignment="Top" Width="106" FontSize="15" Grid.ColumnSpan="2"/>
                     <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1" SelectionChanged="TabControl_SelectionChanged">
-                        <TabItem Header="TabItem">
+                        <TabItem  Header="Разовые расходы">
                             <DataGrid x:Name="ExpenseOnceInfo">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Дата"/>
@@ -165,13 +173,13 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </TabItem>
-                        <TabItem Header="TabItem">
+                        <TabItem Header="Фиксированные расходы">
                             <DataGrid x:Name="ExpenseFixedInfo">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Дата"/>
                                     <DataGridTextColumn Header="Категория"/>
                                     <DataGridTextColumn Header="Кошелек"/>
-                                    <DataGridTextColumn Header="Комментарий"/>
+
                                     <DataGridTextColumn Header="Суммма"/>
                                     <DataGridTextColumn Header="Периодичность"/>
                                 </DataGrid.Columns>
@@ -179,7 +187,7 @@
                         </TabItem>
                     </TabControl>
                     <Label Content="Периодичность" HorizontalAlignment="Left" Height="33" Margin="12,187,0,0" VerticalAlignment="Top" Width="154" FontSize="15" Grid.ColumnSpan="2"/>
-                    <TextBox TextWrapping="Wrap" Margin="10,206,48,207" Grid.ColumnSpan="2"/>
+                    <TextBox TextWrapping="Wrap" Margin="10,209,48,207" Grid.ColumnSpan="2"/>
                     <Label Content="Категория" HorizontalAlignment="Left" Height="24" Margin="10,233,0,0" VerticalAlignment="Top" Width="154" FontSize="15" Grid.ColumnSpan="2"/>
                     <ComboBox Margin="12,257,54,161" Grid.ColumnSpan="2"/>
                     <TextBox TextWrapping="Wrap" Margin="8,281,50,132" Grid.ColumnSpan="2"/>
