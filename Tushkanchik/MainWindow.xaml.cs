@@ -40,17 +40,18 @@ namespace Tushkanchik
         private User User { get; set; }
         private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
-        public class CardForView
-        {
-            public string NamePlusBalance { get; set; }
-            public Card Card { get; set; }
-        }
+       
 
         public MainWindow()
         {
             InitializeComponent();
             _storage = Storage.GetInstance();
 
+            FillViewData();
+        }
+
+        private void FillViewData()
+        {
             _users = new ObservableCollection<User>(GetUsersFromJSON());
             ComboBoxUsersList.ItemsSource = _users;
 
@@ -58,13 +59,12 @@ namespace Tushkanchik
             ComboBoxMoney.ItemsSource = _cardsForView;
 
             var cards = GetCardsFromJSON();
-            foreach(var card in cards)
+            foreach (var card in cards)
             {
                 var cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
                 _cardsForView.Add(cardForView);
             }
-             _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
-           
+            _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
         }
 
 
@@ -88,6 +88,8 @@ namespace Tushkanchik
         {
             if (!File.Exists(UsersPath))
             {
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(UsersPath));
+                    
                 FileStream fs = File.Create(UsersPath);
                 fs.Close();
                 return new List<User>();
