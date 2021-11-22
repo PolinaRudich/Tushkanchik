@@ -12,10 +12,6 @@ namespace Tushkanchik
         public List<User> Holders { get; set; }
         public decimal Balance { get; set; }
         public string Name { get; set; }
-        
-
-       
-      
         public Card(List<User> holders, decimal balance, string name)
         {
             Holders = holders;
