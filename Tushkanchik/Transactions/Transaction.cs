@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik.Transaction
+namespace Tushkanchik.Transactions
 {
 
-    public abstract class Transaction
+    public class Transaction
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
@@ -23,5 +23,6 @@ namespace Tushkanchik.Transaction
             Card = card;
             Comment = comment;
         }
+       
     }
 }

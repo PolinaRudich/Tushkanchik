@@ -15,10 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-//using Newtonsoft.Json;
 using System.Diagnostics;
-using Tushkanchik.Transaction;
-using Tushkanchik.Transaction.Categories;
+using Tushkanchik.Transactions;
+using Tushkanchik.Transactions.Categories;
 using System.Collections.ObjectModel;
 
 
@@ -33,14 +32,14 @@ namespace Tushkanchik
         //AddUser DeleteUser при создании 2 юзера всплывает сообщение учитывать его в оьщей
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
 
-        private const string IncomeCategoriesPath = "./Incomecategories.txt";
+       // private const string IncomeCategoriesPath = "./Incomecategories.txt";
        //public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
       //public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private ObservableCollection<Card> _cards;
         private User User { get; set; }
-        private ObservableCollection<IncomeCategory> _incomeCategories;
+       // private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
 
 
@@ -49,7 +48,7 @@ namespace Tushkanchik
             InitializeComponent();
             _storage = Storage.GetInstance();
 
-
+           
             List<User> usersList = Storage.GetInstance().Users;
             _users = new ObservableCollection<User>(usersList);
             List<Card> cardsList = Storage.GetInstance().Cards;
@@ -61,19 +60,17 @@ namespace Tushkanchik
         {
 
             ComboBoxUsersList.ItemsSource = _users;
+          
 
-            _cardsForView = new ObservableCollection<CardForView>();
-            ComboBoxMoney.ItemsSource = _cardsForView;
 
-            //var cards = GetCardsFromJSON();
-            foreach (var card in _cards)
-            {
-                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
-                _cardsForView.Add(cardForView);
-            }
-            // _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
+    
         }
-
+        public void UpDateCardsView(User user)
+        {
+           
+            _cardsForView = _storage.GetCardsForViewByUser(user);
+            ComboBoxMoney.ItemsSource = _cardsForView;
+        }
 
         private void ButtonCreateUser_Click(object sender, RoutedEventArgs e)
         {
@@ -91,18 +88,15 @@ namespace Tushkanchik
                 MessageBox.Show("Такой пользователь уже существует");
                 return;
             }
-
-
             _users.Add(user);
 
             string converted = JsonSerializer.Serialize(_users);
             File.WriteAllText(_storage.UsersPath, converted);
-
+            UpDateCardsView(User);
             TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
             entertab.IsEnabled = false;
         }
-
         private void ButtonEnter_Click(object sender, RoutedEventArgs e)
         {
             if (ComboBoxUsersList.SelectedItem == null)
@@ -116,6 +110,7 @@ namespace Tushkanchik
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            UpDateCardsView(User);
             nameOfUser.Content = User.Name;
             TabItemMainTab.IsSelected = true;
             entertab.IsEnabled = false;
@@ -125,17 +120,10 @@ namespace Tushkanchik
         private void ComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
-            List<Card> cards = new List<Card>();
-            foreach(Card card in _storage.Cards)
-            {
-                if(card.Holders.Contains(User))
-                {
-                    cards.Add(card);
-                }
-            }
-            ComboBoxWallet.ItemsSource = cards;
+            
+            ComboBoxWallet.ItemsSource = _storage.GetCardsByUser(User);
         }
-
+        
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -175,13 +163,12 @@ namespace Tushkanchik
             Card card = new Card(cardUsers, balance, name);
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
-            List<Card> cards = new List<Card>();
             foreach (var cardForView in _cardsForView)
             {
-                cards.Add(cardForView.Card);
+                _storage.Cards.Add(cardForView.Card);
             }
 
-            string converted = JsonSerializer.Serialize(cards);
+            string converted = JsonSerializer.Serialize(_storage.Cards);
             File.WriteAllText(_storage.CardsPath, converted);
 
         }
@@ -194,6 +181,11 @@ namespace Tushkanchik
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             return;
+        }
+
+        private void ComboBoxMoney_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

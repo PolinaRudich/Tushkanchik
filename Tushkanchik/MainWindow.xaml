@@ -52,7 +52,7 @@
                 <Grid Background="#FFE5E5E5" MaxWidth="800" RenderTransformOrigin="0.482,0.298" Margin="20,0,20,0" Height="398">
 
 
-                    <ComboBox x:Name="ComboBoxMoney" DisplayMemberPath="NamePlusBalance" Margin="19,63,634,305">
+                    <ComboBox x:Name="ComboBoxMoney" DisplayMemberPath="NamePlusBalance" Margin="19,63,634,305" SelectionChanged="ComboBoxMoney_SelectionChanged">
                     </ComboBox>
                     <Label Content="Кошелек" HorizontalAlignment="Left" Height="42" Margin="10,16,0,0" VerticalAlignment="Top" Width="106" FontSize="24" Grid.ColumnSpan="4"/>
                     <Label Content="Карта" HorizontalAlignment="Left" Height="27" Margin="200,51,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>

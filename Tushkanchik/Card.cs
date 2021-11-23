@@ -18,6 +18,17 @@ namespace Tushkanchik
             Balance = balance;
             Name = name;
         }
-        
+        public bool IfHoldersContainsUser(User user)
+
+        {
+            foreach (User holder in Holders)
+            {
+                if (holder.Name ==  user.Name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
