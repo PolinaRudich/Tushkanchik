@@ -3,54 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tushkanchik.Transactions;
+
 namespace Tushkanchik
 {
 
-    public  abstract class CashAccount
+    public abstract class CashAccount
     {
-        private  int? _index { get;   set; }
+
         private List<User> _holders { get; set; }
-        private decimal _balance { get; set; }
-        private string _name { get;set; }
-        private bool _percent { get;  set; }
-        private bool _withdrawal { get; set; }
-        private bool _replacement { get; set; }
+        private decimal Balance { get; set; }
+        private string Name { get; set; }
+
         //public double _cashback { get; set; }
-        public CashAccount()
+
+        public CashAccount(User holder, decimal balance, string name)
         {
-            _index = null;
-            _balance = 0;
-            _name = "";
-            _holders = new List<User>();
-            _percent =false;
-            _withdrawal = false;
-            _replacement = false;
-           
-        }
-        public CashAccount(int idx,string name,User holder,bool percent,bool withdrawal,bool replacement)
-        {
-            _index = idx;
-            _balance = 0;
-            _name = name;
+            List<User> _holders = new List<User>();
             _holders.Add(holder);
-            _percent = percent;
-            _withdrawal = withdrawal;
-            _replacement = replacement;
-         
+            Balance = balance;
+            Name = name;
         }
+        public void IncreaseBalance(Income income, Storage storage)
+        {
+            Balance += income.Amount;
+            storage.Income.Add(income);
+
+
+        }
+        public void DecreaseBalance(Expense expense, Storage storage)
+        {
+            if (expense.Amount < Balance)
+            {
+                Balance -= expense.Amount;
+                storage.Expense.Add(expense);
+            }
+            else
+            {
+                throw new Exception("Недостаточно средств ");
+            }
+        }
+
         public void ChangeName(string name)
         {
-            _name = name;
+            Name = name;
         }
-        public void AddBalance(decimal diff)
-        {
 
-            _balance += diff;
-        }
-        public void RemoveBalance(decimal diff)
-        {
-            _balance -= diff;
-        }
 
         public void AddHolder(User user)
         {

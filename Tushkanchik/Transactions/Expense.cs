@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Tushkanchik.Transaction.Categories;
 
-namespace Tushkanchik.Transaction
+namespace Tushkanchik.Transactions
 {
-    class Expense : Transaction
+    public class Expense : Transaction
     {
         public ExpenseCategory ExpenseCategory { get; set; }
 

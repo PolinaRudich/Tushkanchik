@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Tushkanchik.Transaction;
+using Tushkanchik.Transactions;
 using Tushkanchik.Transaction.Categories;
 
 namespace Tushkanchik
@@ -14,8 +14,8 @@ namespace Tushkanchik
     {
         public List<Card> Cards { get; set; }
         public List<User> Users { get; set; }
-        public List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal { get; set; }
-        public List<DepositWithWithdrawal> DepositWithWithdrawal { get; set; }
+        public List<Deposit> DepositeWithoutWithdrawal { get; set; }
+        public List<Deposit> DepositWithWithdrawal { get; set; }
         public List<Expense> Expense { get; set; }
         public List<Income> Income{ get; set; }
         public List<ExpenseCategory> ExpenseCategory { get; set; }
@@ -77,43 +77,43 @@ namespace Tushkanchik
             }
             return cards;
         }
-        public List<DepositeWithoutWithdrawal> GetDepositeWithoutWithdrawalFromJSON()
+        public List<Deposit> GetDepositeWithoutWithdrawalFromJSON()
         {
             if (!File.Exists(DepositeWithoutWithdrawalPath))
             {
                 FileStream fs = File.Create(DepositeWithoutWithdrawalPath);
                 fs.Close();
-                return new List<DepositeWithoutWithdrawal>();
+                return new List<Deposit>();
             }
-            List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+            List<Deposit> DepositeWithoutWithdrawal = new List<Deposit>();
             string json = File.ReadAllText(DepositeWithoutWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+                DepositeWithoutWithdrawal = new List<Deposit>();
             }
             else
             {
-                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<DepositeWithoutWithdrawal>>(json);
+                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<Deposit>>(json);
             }
             return DepositeWithoutWithdrawal;
         }
-        public List<DepositWithWithdrawal> DepositWithWithdrawalFromJSON()
+        public List<Deposit> DepositWithWithdrawalFromJSON()
         {
             if (!File.Exists(DepositWithWithdrawalPath))
             {
                 FileStream fs = File.Create(DepositWithWithdrawalPath);
                 fs.Close();
-                return new List<DepositWithWithdrawal>();
+                return new List<Deposit>();
             }
-            List<DepositWithWithdrawal> DepositWithWithdrawal = new List<DepositWithWithdrawal>();
+            List<Deposit> DepositWithWithdrawal = new List<Deposit>();
             string json = File.ReadAllText(DepositWithWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositWithWithdrawal = new List<DepositWithWithdrawal>();
+                DepositWithWithdrawal = new List<Deposit>();
             }
             else
             {
-                DepositWithWithdrawal = JsonSerializer.Deserialize<List<DepositWithWithdrawal>>(json);
+                DepositWithWithdrawal = JsonSerializer.Deserialize<List<Deposit>>(json);
             }
             return DepositWithWithdrawal;
         }
@@ -207,6 +207,5 @@ namespace Tushkanchik
             }
             return _storage;
         }
-        public 
     }
 }
