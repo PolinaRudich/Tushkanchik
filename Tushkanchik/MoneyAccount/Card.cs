@@ -11,8 +11,8 @@ namespace Tushkanchik
         public bool cashBack { get; set; }
         public float percentOfCashBack { get; set; }
 
-        public Card( bool CashBack , float PetcentOfCashBack, List<User> Holders, decimal Balance, string Name)
-            :base (Holders, Balance, Name)
+        public Card( bool CashBack , float PetcentOfCashBack, List<User> Holder, decimal Balance, string Name)
+            :base (Holder, Balance, Name)
         {
             cashBack = CashBack;
             percentOfCashBack = PetcentOfCashBack;

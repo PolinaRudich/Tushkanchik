@@ -8,8 +8,8 @@ namespace Tushkanchik
 {
     class Cash : CashAccount
     {
-        public Cash(List<User> Holders, decimal Balance, string Name)
-            :base(Holders, Balance, Name)
+        public Cash(List<User> Holder, decimal Balance, string Name)
+            :base(Holder, Balance, Name)
         {
         
         }
