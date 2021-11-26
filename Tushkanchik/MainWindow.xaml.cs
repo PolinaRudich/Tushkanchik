@@ -39,6 +39,8 @@ namespace Tushkanchik
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private User User { get; set; }
+        public float PercentOfCashBack { get; private set; }
+
         private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
        
@@ -62,7 +64,7 @@ namespace Tushkanchik
             var cards = GetCardsFromJSON();
             foreach (var card in cards)
             {
-                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.name + " " + card.balance };
+                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
                 _cardsForView.Add(cardForView);
             }
             _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
@@ -220,7 +222,7 @@ namespace Tushkanchik
             List<User> cardUsers = new List<User>();
             cardUsers.Add(User);
 
-            Card card = new Card(percentOfCashBack, List < User > holder, balance,  name);
+            Card card = new Card( User,  balance,  name, PercentOfCashBack) ;
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
             List<Card> cards = new List<Card>();

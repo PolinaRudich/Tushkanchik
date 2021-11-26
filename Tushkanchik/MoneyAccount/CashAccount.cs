@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Tushkanchik
 {
@@ -11,8 +7,6 @@ namespace Tushkanchik
         public List<User> _holders { get; set; }
         public decimal Balance { get; set; }
         public string Name { get; set; }
-
-        //public double _cashback { get; set; }
 
         public CashAccount(User holder, decimal balance, string name)
         {
