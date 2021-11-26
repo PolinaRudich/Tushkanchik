@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-    class Cashcs
+    class Cash
     {
+      
+          
     }
 }

@@ -14,9 +14,9 @@ namespace Tushkanchik.Transactions
         public Expense(decimal amount, DateTime date, Card card, string comment)
             : base(amount, date, card,comment)
         {
+  }
 
-        }
-
+      
 
 
     }
