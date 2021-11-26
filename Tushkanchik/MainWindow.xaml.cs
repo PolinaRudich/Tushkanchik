@@ -22,6 +22,7 @@ using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
 
 
+
 namespace Tushkanchik
 {
     /// <summary>
@@ -61,7 +62,7 @@ namespace Tushkanchik
             var cards = GetCardsFromJSON();
             foreach (var card in cards)
             {
-                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
+                var cardForView = new CardForView() { Card = card, NamePlusBalance = card.name + " " + card.balance };
                 _cardsForView.Add(cardForView);
             }
             _incomeCategories = new ObservableCollection<IncomeCategory>(GetIncomeCategoriesFromJSON());
@@ -219,7 +220,7 @@ namespace Tushkanchik
             List<User> cardUsers = new List<User>();
             cardUsers.Add(User);
 
-            Card card = new Card(cardUsers, balance, name);
+            Card card = new Card(percentOfCashBack, List < User > holder, balance,  name);
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
             List<Card> cards = new List<Card>();

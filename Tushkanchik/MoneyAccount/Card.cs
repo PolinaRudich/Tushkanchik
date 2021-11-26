@@ -8,14 +8,13 @@ namespace Tushkanchik
 {
     public class Card : CashAccount
     {
-        public bool cashBack { get; set; }
+       
         public float percentOfCashBack { get; set; }
 
-        public Card( bool CashBack , float PetcentOfCashBack, List<User> Holder, decimal Balance, string Name)
-            :base (Holder, Balance, Name)
+        public Card( User holder, decimal balance, string name, float PercentOfCashBack)
+            :base (holder, balance, name)
         {
-            cashBack = CashBack;
-            percentOfCashBack = PetcentOfCashBack;
+            percentOfCashBack = PercentOfCashBack;
         }
      }
 }

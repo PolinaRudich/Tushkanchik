@@ -8,16 +8,18 @@ namespace Tushkanchik
 {
     public abstract class CashAccount
     {
-        public List<User> holder { get; set; }
-        public decimal balance { get; set; }
-        public string name { get; set; }
+        public List<User> _holders { get; set; }
+        public decimal Balance { get; set; }
+        public string Name { get; set; }
 
-        public CashAccount(List<User> Holder, decimal Balance, string Name )
+        //public double _cashback { get; set; }
+
+        public CashAccount(User holder, decimal balance, string name)
         {
-            List<User> holders = new List<User>();
-            holders.Add(Holder);
-            balance = Balance;
-            name = Name;
+            List<User> _holders = new List<User>();
+            _holders.Add(holder);
+            Balance = balance;
+            Name = name;
         }
     }
 }

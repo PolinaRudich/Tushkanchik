@@ -11,11 +11,11 @@ namespace Tushkanchik
 
         public bool withdrawal { get; set; }
 
-        public DepositeWithWithdrawal(bool Withdrawal, bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate, List<User> Holder, decimal Balance, string Name) 
-            : base(RepLacement, Percent, StartDate, FinishDate,Holder,Balance,Name)
+        public DepositeWithWithdrawal(bool Withdrawal, bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate, User holder, decimal balance, string name) 
+            : base(RepLacement, Percent, StartDate, FinishDate,holder,balance,name)
 
         {
-            withdrawal = Withdrawal;
+            withdrawal = true;
         }
     }
 }
