@@ -15,11 +15,9 @@ namespace Tushkanchik
         public List<Card> Cards { get; set; }
         public List<User> Users { get; set; }
 <<<<<<< HEAD
-        public List<Deposit> DepositeWithoutWithdrawal { get; set; }
-        public List<Deposit> DepositWithWithdrawal { get; set; }
+        public List<Deposite> DepositeWithoutWithdrawal { get; set; }
 =======
         public List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal { get; set; }
-        public List<DepositeWithWithdrawal> DepositWithWithdrawal { get; set; }
 >>>>>>> cashaccount
         public List<Expense> Expense { get; set; }
         public List<Income> Income{ get; set; }
@@ -82,28 +80,28 @@ namespace Tushkanchik
             }
             return cards;
         }
-        public List<Deposit> GetDepositeWithoutWithdrawalFromJSON()
+        public List<Deposite> GetDepositeWithoutWithdrawalFromJSON()
         {
             if (!File.Exists(DepositeWithoutWithdrawalPath))
             {
                 FileStream fs = File.Create(DepositeWithoutWithdrawalPath);
                 fs.Close();
-                return new List<Deposit>();
+                return new List<Deposite>();
             }
-            List<Deposit> DepositeWithoutWithdrawal = new List<Deposit>();
+            List<Deposite> DepositeWithoutWithdrawal = new List<Deposite>();
             string json = File.ReadAllText(DepositeWithoutWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositeWithoutWithdrawal = new List<Deposit>();
+                DepositeWithoutWithdrawal = new List<Deposite>();
             }
             else
             {
-                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<Deposit>>(json);
+                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<Deposite>>(json);
             }
             return DepositeWithoutWithdrawal;
         }
 <<<<<<< HEAD
-        public List<Deposit> DepositWithWithdrawalFromJSON()
+        public List<Deposite> DepositWithWithdrawalFromJSON()
 =======
         public List<DepositeWithWithdrawal> DepositeWithWithdrawalFromJSON()
 >>>>>>> cashaccount
@@ -113,32 +111,32 @@ namespace Tushkanchik
                 FileStream fs = File.Create(DepositeWithWithdrawalPath);
                 fs.Close();
 <<<<<<< HEAD
-                return new List<Deposit>();
+                return new List<Deposite>();
             }
-            List<Deposit> DepositWithWithdrawal = new List<Deposit>();
-            string json = File.ReadAllText(DepositWithWithdrawalPath);
-            if (string.IsNullOrWhiteSpace(json))
-            {
-                DepositWithWithdrawal = new List<Deposit>();
-            }
-            else
-            {
-                DepositWithWithdrawal = JsonSerializer.Deserialize<List<Deposit>>(json);
-=======
-                return new List<DepositeWithWithdrawal>();
-            }
-            List<DepositeWithWithdrawal> DepositWithWithdrawal = new List<DepositeWithWithdrawal>();
+            List<Deposite> DepositeWithWithdrawal = new List<Deposite>();
             string json = File.ReadAllText(DepositeWithWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositWithWithdrawal = new List<DepositeWithWithdrawal>();
+                DepositeWithWithdrawal = new List<Deposite>();
             }
             else
             {
-                DepositWithWithdrawal = JsonSerializer.Deserialize<List<DepositeWithWithdrawal>>(json);
+                DepositeWithWithdrawal = JsonSerializer.Deserialize<List<Deposite>>(json);
+=======
+                return new List<DepositeWithWithdrawal>();
+            }
+            List<DepositeWithWithdrawal> DepositeWithWithdrawal = new List<DepositeWithWithdrawal>();
+            string json = File.ReadAllText(DepositeWithWithdrawalPath);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                DepositeWithWithdrawal = new List<DepositeWithWithdrawal>();
+            }
+            else
+            {
+                DepositeWithWithdrawal = JsonSerializer.Deserialize<List<DepositeWithWithdrawal>>(json);
 >>>>>>> cashaccount
             }
-            return DepositWithWithdrawal;
+            return DepositeWithWithdrawal;
         }
         public List<Expense> ExpenseFromJSON()
         {
