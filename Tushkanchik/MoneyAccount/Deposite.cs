@@ -4,18 +4,18 @@ namespace Tushkanchik
 {
     public abstract class Deposite : CashAccount
     {
-        public bool replacement { get; set; }
-        public decimal percent { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime finishDate { get; set; }
+        public bool Replacement { get; set; }
+        public decimal Percent { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FinishDate { get; set; }
 
-        public Deposite(  bool Replacement, decimal Percent, DateTime StartDate, DateTime FinishDate, User holder, decimal balance, string name)
+        public Deposite(User holder, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
             :base(holder, balance, name)
         {
-            replacement = Replacement;
-            percent = Percent;
-            startDate = StartDate;
-            finishDate = FinishDate;
+            Replacement = replacement;
+            Percent = percent;
+            StartDate = startDate;
+            FinishDate = finishDate;
         }
     }
 }

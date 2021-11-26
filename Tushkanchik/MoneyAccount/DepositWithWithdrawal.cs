@@ -7,8 +7,8 @@ namespace Tushkanchik
 
         public bool withdrawal { get; set; }
 
-        public DepositeWithWithdrawal(bool Withdrawal, bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate, User holder, decimal balance, string name) 
-            : base(RepLacement, Percent, StartDate, FinishDate,holder,balance,name)
+        public DepositeWithWithdrawal(User holder, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
+            : base(holder, balance, name, percent, startDate, finishDate, replacement)
 
         {
             withdrawal = true;

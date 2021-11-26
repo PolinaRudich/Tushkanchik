@@ -39,7 +39,7 @@ namespace Tushkanchik
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private User User { get; set; }
-        public float PercentOfCashBack { get; private set; }
+        public decimal PercentOfCashBack { get; private set; }
 
         private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;

@@ -8,10 +8,10 @@ namespace Tushkanchik
 {
     public class DepositeWithoutWithdrawal: Deposite
     {
-        public DepositeWithoutWithdrawal(bool RepLacement, decimal Percent, DateTime StartDate, DateTime FinishDate, User holder, decimal balance, string name)
-            :base(RepLacement, Percent, StartDate, FinishDate,holder,balance, name)
+        public DepositeWithoutWithdrawal(User holder, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
+            :base(holder, balance, name, percent, startDate, finishDate, replacement)
         {
-            replacement = true;
+            replacement = false;
            
         }
     }
