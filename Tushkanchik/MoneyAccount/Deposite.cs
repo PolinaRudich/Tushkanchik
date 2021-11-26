@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Tushkanchik
 {
-    public abstract class Deposite
+    public abstract class Deposite : CashAccount
     {
         public bool replacement { get; set; }
         public decimal percent { get; set; }
         public DateTime startDate { get; set; }
         public DateTime finishDate { get; set; }
 
-        public Deposite(  bool Replacement, decimal Percent, DateTime StartDate, DateTime FinishDate)
+        public Deposite(  bool Replacement, decimal Percent, DateTime StartDate, DateTime FinishDate, List<User> Holders, decimal Balance, string Name)
+            :base(Holders, Balance, Name)
         {
             replacement = Replacement;
             percent = Percent;
