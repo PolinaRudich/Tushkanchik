@@ -22,6 +22,7 @@ using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
 
 
+
 namespace Tushkanchik
 {
     /// <summary>
@@ -38,6 +39,8 @@ namespace Tushkanchik
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private User User { get; set; }
+        public decimal PercentOfCashBack { get; private set; }
+
         private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
        
@@ -219,7 +222,7 @@ namespace Tushkanchik
             List<User> cardUsers = new List<User>();
             cardUsers.Add(User);
 
-            Card card = new Card(cardUsers, balance, name);
+            Card card = new Card( User,  balance,  name, PercentOfCashBack) ;
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
             List<Card> cards = new List<Card>();

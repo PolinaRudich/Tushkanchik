@@ -1,7 +1,7 @@
 ﻿using System;
 using Tushkanchik.Transaction.Categories;
 
-namespace Tushkanchik.Transaction
+namespace Tushkanchik.Transactions
 {
     public  class Income : Transaction 
     {

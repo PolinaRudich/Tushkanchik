@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tushkanchik.Transaction
+namespace Tushkanchik.Transactions
 {
 
     public abstract class Transaction
