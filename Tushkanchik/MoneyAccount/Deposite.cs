@@ -10,8 +10,8 @@ namespace Tushkanchik
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
 
-        public Deposite(User holder,List<User> holders, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
-            :base(holder, holders, balance, name)
+        public Deposite(User holder, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
+            :base(holder, balance, name)
         {
             Replacement = replacement;
             Percent = percent;

@@ -6,30 +6,19 @@ namespace Tushkanchik
 {
     public abstract class CashAccount
     {
-        public List<User> Holders { get; set; }
+        
         public User Holder { get; set; }
         public decimal Balance { get; set; }
         public string Name { get; set; }
 
-        public CashAccount(User holder, List<User> holders, decimal balance, string name)
+        public CashAccount(User holder, decimal balance, string name)
         {
-            Holders = holders;
+           
             Holder = holder;
             Balance = balance;
             Name = name;
         }
-        public bool IfHoldersContainsUser(User user)
-
-        {
-            foreach (User holder in Holders)
-            {
-                if (holder.Name == user.Name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+      
         public void IncreaseBalance(Income income, Storage storage)
         {
             Balance += income.Amount;

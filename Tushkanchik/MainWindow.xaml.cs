@@ -77,7 +77,7 @@ namespace Tushkanchik
 
             foreach (Card card in _storage.Cards)
             {
-                if (card.IfHoldersContainsUser(user))
+                if (card.Holder.Name == user.Name)
                 {
                     CardForView cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
                     cards.Add(cardForView);
@@ -105,7 +105,7 @@ namespace Tushkanchik
 
             string converted = JsonSerializer.Serialize(_users);
             File.WriteAllText(_storage.UsersPath, converted);
-            UpDateCardsView(User);
+            UpDateCardsView(user);
             TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
             entertab.IsEnabled = false;
@@ -170,10 +170,10 @@ namespace Tushkanchik
                 return;
             }
             //TODO разобраться с листами юзеров и тд
-            List<User> cardUsers = new List<User>();
-            cardUsers.Add(User);
+            //List<User> cardUsers = new List<User>();
+           // cardUsers.Add(User);
 
-            Card card = new Card(holder, cardUsers, balance, name,percentOfCashBack);
+            Card card = new Card( User, balance, name,percentOfCashBack);
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
             foreach (var cardForView in _cardsForView)

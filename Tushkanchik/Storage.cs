@@ -39,7 +39,7 @@ namespace Tushkanchik
 
             foreach (Card card in _storage.Cards)
             {
-                if (card.IfHoldersContainsUser(user))
+                if (card.Holder.Name==user.Name)
                 {
                     CardForView cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
                     cards.Add(cardForView);
@@ -52,7 +52,7 @@ namespace Tushkanchik
             List<Card> cards = new List<Card>();
             foreach (Card card in _storage.Cards)
             {
-                if (card.Holders.Contains(user))
+                if (card.Holder.Name == user.Name)
                 {
                     cards.Add(card);
                 }
@@ -70,10 +70,6 @@ namespace Tushkanchik
             List<User> users = new List<User>();
             string json = File.ReadAllText(UsersPath);
             if (string.IsNullOrWhiteSpace(json))
-            {
-                users = new List<User>();
-            }
-            if (users is null)
             {
                 users = new List<User>();
             }

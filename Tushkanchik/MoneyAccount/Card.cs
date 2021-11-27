@@ -13,8 +13,8 @@ namespace Tushkanchik
        
         public decimal PercentOfCashBack { get; set; }
 
-        public Card( User holder, List<User> holders, decimal balance, string name, decimal percentOfCashBack)
-            :base (holder,holders, balance, name)
+        public Card( User holder,  decimal balance, string name, decimal percentOfCashBack)
+            :base (holder, balance, name)
         {
             PercentOfCashBack = percentOfCashBack;
         }
