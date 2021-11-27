@@ -11,16 +11,18 @@ namespace Tushkanchik.Transactions
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
+
        
-        public Card Card { get; set; }
+       // public Card Card { get; set; }
 
         public string Comment { get; set; }
+        public User User { get; set; }
 
-        public Transaction(decimal amount, DateTime date, Card card, string comment)
+        public Transaction(decimal amount, User user, DateTime date, string comment)
         {
             Amount = amount;
+            User = user;
             Date = date;
-            Card = card;
             Comment = comment;
         }
     }

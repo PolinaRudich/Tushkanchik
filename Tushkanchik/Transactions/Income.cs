@@ -7,8 +7,8 @@ namespace Tushkanchik.Transactions
     {
         public IncomeCategory IncomeCategory { get; set; }
 
-        public Income(decimal amount, DateTime date, Card card, string comment)
-            : base( amount,  date,  card,comment)
+        public Income(decimal amount, User user, DateTime date,  string comment)
+            : base( amount, user,  date,comment)
         {
 
         }

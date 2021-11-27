@@ -9,20 +9,24 @@ namespace Tushkanchik
 {
     public class Card : CashAccount
     {
-       
+
         public decimal PercentOfCashBack { get; set; }
 
-        public Card( User holder, decimal balance, string name, decimal percentOfCashBack)
-            :base (holder, balance, name)
+        public Card(User holder, decimal balance, string name, decimal percentOfCashBack)
+            : base(holder, balance, name)
         {
             PercentOfCashBack = percentOfCashBack;
         }
 
-        public void AddCashBackFromExpense (Income income, Expense expense, Storage storage)
+
+        public void AddCashBackFromExpense(Expense expense, Storage storage)
         {
-            if ( PercentOfCashBack > 0 )
+            if (PercentOfCashBack > 0)
             {
-                income.Amount = expense.Amount * PercentOfCashBack;
+                decimal amount = expense.Amount * PercentOfCashBack;
+                string comment = "cashback";
+                DateTime now = new DateTime();
+                Income income = new Income(amount, now, this, comment);
                 Balance += income.Amount;
                 storage.Income.Add(income);
             }
