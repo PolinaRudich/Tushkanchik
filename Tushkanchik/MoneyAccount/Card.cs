@@ -9,15 +9,19 @@ namespace Tushkanchik
 {
     public class Card : CashAccount
     {
+        private List<User> cardUsers;
        
         public decimal PercentOfCashBack { get; set; }
 
-        public Card( User holder, decimal balance, string name, decimal percentOfCashBack)
-            :base (holder, balance, name)
+        public Card( User holder, List<User> holders, decimal balance, string name, decimal percentOfCashBack)
+            :base (holder,holders, balance, name)
         {
             PercentOfCashBack = percentOfCashBack;
         }
 
+       
+
+       
         public void AddCashBackFromExpense (Income income, Expense expense, Storage storage)
         {
             if ( PercentOfCashBack > 0 )
