@@ -20,8 +20,8 @@ using System.Diagnostics;
 using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
-
-
+using Tushkanchik.Transactions;
+using Tushkanchik.Transactions.Categories;
 
 namespace Tushkanchik
 {
@@ -34,14 +34,17 @@ namespace Tushkanchik
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
        
         private const string IncomeCategoriesPath = "./Incomecategories.txt";
-        public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
-        public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
+        private const string ExpenseCategoriesPath = "./Expensecategories.txt";
+        public string UsersPath = Directory.GetCurrentDirectory() + "\\json\\users.txt";
+        public string CardsPath = Directory.GetCurrentDirectory() + "\\json\\cards.txt";
         private ObservableCollection<CardForView> _cardsForView;
         private ObservableCollection<User> _users;
         private User User { get; set; }
         public decimal PercentOfCashBack { get; private set; }
 
         private ObservableCollection<IncomeCategory> _incomeCategories;
+
+        private ObservableCollection<ExpenseCategorylogic> _expenseCategories;
         private Storage _storage;
        
 
@@ -103,7 +106,7 @@ namespace Tushkanchik
             {
                 users = new List<User>();
             }
-            if (users is null)
+            else if (users is null)
             {
                 users = new List<User>();
             } else
@@ -183,6 +186,25 @@ namespace Tushkanchik
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string type = categoryBox.Text;
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            //holderName.Background = Brushes.Transparent;
+            ExpenseCategorylogic expenseLogic = new ExpenseCategorylogic();
+            if (_expenseCategories.Contains(expenseLogic))
+            {
+                expenseLogic.Create(type);
+                MessageBox.Show("Такая категория уже существует");
+                return;
+            }
+            _expenseCategories.Add(expenseLogic);
+
+            string converted = JsonSerializer.Serialize(_expenseCategories);
+            File.WriteAllText(ExpenseCategoriesPath, converted);
 
         }
 

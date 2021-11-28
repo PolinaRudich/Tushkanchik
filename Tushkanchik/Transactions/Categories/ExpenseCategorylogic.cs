@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using Tushkanchik.Transaction.Categories;
 
 namespace Tushkanchik.Transactions.Categories
 {
-    class ExpenseCategorylogic
+    public class ExpenseCategorylogic
     {
         private Storage _storage = Storage.GetInstance();
         public void Create(string name)
