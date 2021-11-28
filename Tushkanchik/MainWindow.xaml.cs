@@ -332,6 +332,7 @@ namespace Tushkanchik
             File.WriteAllText(IncomeCategoriesPath, converted);
             //string converted = JsonSerializer.Serialize(_incomeCategories);
             //File.WriteAllText(IncomeCategoriesPath, converted);
+            incomeCategoryName.Text = String.Empty;
         }
 
         private void Button_Click_Add_Expense_Category(object sender, RoutedEventArgs e)
@@ -361,6 +362,8 @@ namespace Tushkanchik
             };
             string converted = JsonSerializer.Serialize(_expenseCategories, options);
             File.WriteAllText(ExpenseCategoriesPath, converted);
+
+            expenseCategoryName.Text = String.Empty;
         }
 
 
