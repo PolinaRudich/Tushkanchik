@@ -46,7 +46,7 @@ namespace Tushkanchik
         private readonly User holder;
 
         public MainWindow()
-        {
+         {
             InitializeComponent();
             _storage = Storage.GetInstance();
             
@@ -78,6 +78,8 @@ namespace Tushkanchik
         }
         public void UpdateIncomesView(Card card)
         {
+
+           
             _incomesForView = _storage.GetIncomeForViewByCard(card);
             IncomeOnceInfo.ItemsSource = _incomesForView;
         }
@@ -121,17 +123,17 @@ namespace Tushkanchik
             }
 
             holderName.Background = Brushes.Transparent;
-            User user = new User(name); //{ Name = name };
-            if (_users.Contains(user))
+            User = new User(name); //{ Name = name };
+            if (_users.Contains(User))
             {
                 MessageBox.Show("Такой пользователь уже существует");
                 return;
             }
-            _users.Add(user);
+            _users.Add(User);
 
             string converted = JsonSerializer.Serialize(_users);
             File.WriteAllText(_storage.UsersPath, converted);
-            UpDateCardsView(user);
+            UpDateCardsView(User);
             TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
             entertab.IsEnabled = false;
@@ -164,7 +166,22 @@ namespace Tushkanchik
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+         {
+            decimal balance;
+            if (Card != null)
+            {
+                balance = Card.Balance;
+            }
+            else
+            {
+                bool isNumber = decimal.TryParse(Cardbalance.Text.Trim(), out balance);
+                if (!isNumber)
+                {
+                    return;
+                }   
+            }
+            string name = cardName.Text.Trim();
+            Card = new Card(User, balance, name, percentOfCashBack);
             UpdateIncomesView(Card);
             if (Income.IsSelected)
             {
@@ -216,14 +233,10 @@ namespace Tushkanchik
             File.WriteAllText(_storage.CardsPath, converted);
 
         }
-        private void TabControl_SelectionChange(object sender, SelectionChangedEventArgs e)
-        {
-            
-                
-        }
         private void ComboBoxWallet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            CardForView card = (CardForView)ComboBoxWallet.SelectedItem;
+            Card = card.Card;
 
         }
 
@@ -275,7 +288,10 @@ namespace Tushkanchik
             UpdateIncomesView(Card);
         }
 
+        private void ComboBoxMoney_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }
 

@@ -8,7 +8,7 @@
         Title="MainPage" Height="462" Width="863">
     <Grid Margin="0,0,-22,0" >
 
-        <TabControl Margin="0,0,23,0">
+        <TabControl Margin="0,0,23,0" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="entertab" Header="Вход">
                 <Grid Background="#FFE5E5E5" Margin="0,0,-27,0">
                     <Grid.ColumnDefinitions>
@@ -52,7 +52,7 @@
                 <Grid Background="#FFE5E5E5" MaxWidth="800" RenderTransformOrigin="0.482,0.298" Margin="20,0,20,0" Height="398">
 
 
-                    <ComboBox x:Name="ComboBoxMoney" DisplayMemberPath="NamePlusBalance" Margin="19,63,634,305">
+                    <ComboBox x:Name="ComboBoxMoney" DisplayMemberPath="NamePlusBalance" Margin="19,63,634,305" SelectionChanged="ComboBoxMoney_SelectionChanged">
                     </ComboBox>
                     <Label Content="Кошелек" HorizontalAlignment="Left" Height="42" Margin="10,16,0,0" VerticalAlignment="Top" Width="106" FontSize="24" Grid.ColumnSpan="4"/>
                     <Label Content="Карта" HorizontalAlignment="Left" Height="27" Margin="200,51,0,0" VerticalAlignment="Top" Width="46" FontWeight="Bold"/>
@@ -89,7 +89,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Доходы" x:Name="Income">
+            <TabItem Header="Доходы" x:Name="Income" Margin="-6,-1,2,-1">
                 <Grid Background="#FFE5E5E5" MaxWidth="850" Height="437"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="34*"/>
@@ -108,7 +108,7 @@
                     <TextBox TextWrapping="Wrap"  x:Name="Comment" Margin="11,168,48,250" Grid.ColumnSpan="2"/>
                     <Label Content="Комментарий" HorizontalAlignment="Left" Height="28" Margin="10,146,0,0" VerticalAlignment="Top" Width="134" FontSize="15" Grid.ColumnSpan="2"/>
                     <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="10,106,0,0" VerticalAlignment="Top" Width="106" FontSize="15" Grid.ColumnSpan="2"/>
-                    <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1" SelectionChanged="TabControl_SelectionChanged">
+                    <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1" >
                         <TabItem Header="Разовые доходы">
                             <DataGrid x:Name="IncomeOnceInfo">
                                 <DataGrid.Columns>
@@ -155,7 +155,7 @@
                     <TextBox TextWrapping="Wrap" Margin="11,168,48,250" Grid.ColumnSpan="2"/>
                     <Label Content="Комментарий" HorizontalAlignment="Left" Height="28" Margin="10,146,0,0" VerticalAlignment="Top" Width="134" FontSize="15" Grid.ColumnSpan="2"/>
                     <Label Content="Сумма" HorizontalAlignment="Left" Height="28" Margin="10,106,0,0" VerticalAlignment="Top" Width="106" FontSize="15" Grid.ColumnSpan="2"/>
-                    <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1" SelectionChanged="TabControl_SelectionChanged">
+                    <TabControl Grid.ColumnSpan="2" Margin="116,56,10,27" Grid.Column="1">
                         <TabItem  Header="Разовые расходы">
                             <DataGrid x:Name="ExpenseOnceInfo">
                                 <DataGrid.Columns>

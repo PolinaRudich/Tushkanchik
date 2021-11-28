@@ -54,6 +54,7 @@ namespace Tushkanchik
 
             foreach (Income income in _storage.Income)
             {
+                
                 if (income.Card.Name == card.Name)
                 {
                     IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name };
