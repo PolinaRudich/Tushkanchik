@@ -8,9 +8,7 @@ using Tushkanchik.Transactions;
 namespace Tushkanchik
 {
     public class Card : CashAccount
-    {
-        private List<User> cardUsers;
-       
+    {  
         public decimal PercentOfCashBack { get; set; }
 
         public Card( User holder,  decimal balance, string name, decimal percentOfCashBack)

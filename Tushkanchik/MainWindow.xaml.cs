@@ -20,8 +20,7 @@ using System.Diagnostics;
 using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
-
-
+using Tushkanchik.Transactions;
 
 namespace Tushkanchik
 {
@@ -34,20 +33,25 @@ namespace Tushkanchik
         //статистики ил нет если да то создается аккаунт юзерфемели(фемели создается 1 раз)
 
         public ObservableCollection<CardForView> _cardsForView;
+        public ObservableCollection<IncomeForView> _incomesForView;
         public ObservableCollection<User> _users;
+        public ObservableCollection<Income> _income;
         public ObservableCollection<Card> _cards;
         private User User { get; set; }
+        private Card Card { get; set; }
         // private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
         private decimal percentOfCashBack;
+        private IncomeCategory incomeCategory;
         private readonly User holder;
 
         public MainWindow()
         {
             InitializeComponent();
             _storage = Storage.GetInstance();
-
-
+            
+            List<Income> incomes = Storage.GetInstance().Income;
+            _income = new ObservableCollection<Income>(incomes);
             List<User> usersList = Storage.GetInstance().Users;
             _users = new ObservableCollection<User>(usersList);
             List<Card> cardsList = Storage.GetInstance().Cards;
@@ -59,7 +63,7 @@ namespace Tushkanchik
         {
 
             ComboBoxUsersList.ItemsSource = _users;
-
+            IncomeOnceInfo.ItemsSource = _incomesForView;
 
 
 
@@ -69,6 +73,28 @@ namespace Tushkanchik
 
             _cardsForView = _storage.GetCardsForViewByUser(user);
             ComboBoxMoney.ItemsSource = _cardsForView;
+            ComboBoxWallet.ItemsSource = _cardsForView;
+
+        }
+        public void UpdateIncomesView(Card card)
+        {
+            _incomesForView = _storage.GetIncomeForViewByCard(card);
+            IncomeOnceInfo.ItemsSource = _incomesForView;
+        }
+        public ObservableCollection<IncomeForView> GetIncomeForViewByCard(Card card)
+        {
+            ObservableCollection<IncomeForView> incomes = new ObservableCollection<IncomeForView>();
+
+
+            foreach (Income income in _storage.Income)
+            {
+                if (income.Card.Name == card.Name)
+                {
+                    IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = Card, income = income,date=income.Date,comment=income.Comment,incomeCategoryName=income.IncomeCategory.Name};
+                    incomes.Add(incomeForView);
+                }
+            }
+            return incomes;
         }
         public ObservableCollection<CardForView> GetCardsForViewByUser(User user)
         {
@@ -134,12 +160,17 @@ namespace Tushkanchik
         {
 
 
-            //ComboBoxWallet.ItemsSource = _storage.GetCardsByUser(User);
+            
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            UpdateIncomesView(Card);
+            if (Income.IsSelected)
+            {
+                GetCardsForViewByUser(User);
+                UpdateIncomesView(Card);
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -185,27 +216,72 @@ namespace Tushkanchik
             File.WriteAllText(_storage.CardsPath, converted);
 
         }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TabControl_SelectionChange(object sender, SelectionChangedEventArgs e)
         {
+            
+                
+        }
+        private void ComboBoxWallet_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            return;
+           
+           
+            if (ComboBoxWallet.SelectedItem == null)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string summary = Summary.Text.Trim();
+            string DateOfIncome = dateOfIncome.Text.Trim();
+            DateTime parsedDateOfIncome = DateTime.Parse(DateOfIncome);
+            string comment = Comment.Text.Trim();
+            decimal amount;
+            IncomeCategory incomeCategory = new IncomeCategory() { Name = "Шлюхи" };
+            Card = ((CardForView)ComboBoxWallet.SelectedItem).Card;
+            if (string.IsNullOrWhiteSpace(Card.Name))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            bool isNumber = decimal.TryParse(Summary.Text.Trim(), out amount);
+            if (!isNumber)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(summary))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Income income = new Income( amount, parsedDateOfIncome,  Card,  comment,  incomeCategory); //{ Name = name };
+           
+            _income.Add(income);
+            Card card = new Card(User, Card.Balance, Card.Name, percentOfCashBack);
+            _incomesForView.Add(new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name });
+
+            foreach (var incomeForView in _incomesForView)
+            {
+                _storage.Income.Add(incomeForView.income);
+            }
+
+            string converted = JsonSerializer.Serialize(_income);
+            File.WriteAllText(_storage.IncomePath, converted);
+            UpdateIncomesView(Card);
         }
 
-        private void ComboBoxMoney_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
     }
 }
 
- 
 
-    
+
+
 
 
 

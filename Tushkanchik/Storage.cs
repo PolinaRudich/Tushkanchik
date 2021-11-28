@@ -47,6 +47,21 @@ namespace Tushkanchik
             }
             return cards;
         }
+        public ObservableCollection<IncomeForView> GetIncomeForViewByCard(Card card)
+        {
+            ObservableCollection<IncomeForView> incomes = new ObservableCollection<IncomeForView>();
+
+
+            foreach (Income income in _storage.Income)
+            {
+                if (income.Card.Name == card.Name)
+                {
+                    IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name };
+                    incomes.Add(incomeForView);
+                }
+            }
+            return incomes;
+        }
         public List<Card> GetCardsByUser(User user)
         {
             List<Card> cards = new List<Card>();
