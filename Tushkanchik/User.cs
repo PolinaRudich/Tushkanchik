@@ -15,5 +15,6 @@ namespace Tushkanchik
         {
             Name = name;
         }
+       
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Tushkanchik.Transactions;
+using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
+using Tushkanchik.Transactions;
 
 namespace Tushkanchik
 {
@@ -14,28 +16,65 @@ namespace Tushkanchik
     {
         public List<Card> Cards { get; set; }
         public List<User> Users { get; set; }
-
-        public List<DepositeWithWithdrawal> DepositeWithtWithdrawal { get; set; }
-
         public List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal { get; set; }
-
+        public List<DepositeWithWithdrawal> DepositWithWithdrawal { get; set; }
         public List<Expense> Expense { get; set; }
-        public List<Income> Income{ get; set; }
+        public List<Income> Income { get; set; }
         public List<ExpenseCategory> ExpenseCategory { get; set; }
         public List<IncomeCategory> IncomeCategory { get; set; }
         //cохрание категорий
-
         private static Storage _storage;
-        public  string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
+        public string UsersPath = Directory.GetCurrentDirectory() + "/json/users.txt";
         public string CardsPath = Directory.GetCurrentDirectory() + "/json/cards.txt";
         public string DepositeWithoutWithdrawalPath = Directory.GetCurrentDirectory() + "/json/depositeWithoutWithdrawal.txt";
-        public string DepositeWithWithdrawalPath = Directory.GetCurrentDirectory() + "/json/depositeWithWithdrawal.txt";
+        public string DepositWithWithdrawalPath = Directory.GetCurrentDirectory() + "/json/depositWithWithdrawal.txt";
         public string ExpensePath = Directory.GetCurrentDirectory() + "/json/expense.txt";
         public string IncomePath = Directory.GetCurrentDirectory() + "/json/income.txt";
         public string ExpenseCategoryPath = Directory.GetCurrentDirectory() + "/json/expenseCategory.txt";
         public string IncomeCategoryPath = Directory.GetCurrentDirectory() + "/json/incomeCategory.txt";
+        public ObservableCollection<CardForView> GetCardsForViewByUser(User user)
+        {
+            ObservableCollection<CardForView> cards = new ObservableCollection<CardForView>();
 
 
+            foreach (Card card in _storage.Cards)
+            {
+                if (card.Holder.Name==user.Name)
+                {
+                    CardForView cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
+                    cards.Add(cardForView);
+                }
+            }
+            return cards;
+        }
+        public ObservableCollection<IncomeForView> GetIncomeForViewByCard(Card card)
+        {
+            ObservableCollection<IncomeForView> incomes = new ObservableCollection<IncomeForView>();
+
+
+            foreach (Income income in _storage.Income)
+            {
+                
+                if (income.Card.Name == card.Name)
+                {
+                    IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name };
+                    incomes.Add(incomeForView);
+                }
+            }
+            return incomes;
+        }
+        public List<Card> GetCardsByUser(User user)
+        {
+            List<Card> cards = new List<Card>();
+            foreach (Card card in _storage.Cards)
+            {
+                if (card.Holder.Name == user.Name)
+                {
+                    cards.Add(card);
+                }
+            }
+            return cards;
+        }
         public List<User> GetUsersFromJSON()
         {
             if (!File.Exists(UsersPath))
@@ -50,14 +89,11 @@ namespace Tushkanchik
             {
                 users = new List<User>();
             }
-            if (users is null)
-            {
-                users = new List<User>();
-            }
             else
             {
                 users = JsonSerializer.Deserialize<List<User>>(json);
             }
+            Users = users;
             return users;
         }
         public List<Card> GetCardsFromJSON()
@@ -78,6 +114,7 @@ namespace Tushkanchik
             {
                 cards = JsonSerializer.Deserialize<List<Card>>(json);
             }
+            Cards = cards;
             return cards;
         }
         public List<DepositeWithoutWithdrawal> GetDepositeWithoutWithdrawalFromJSON()
@@ -88,44 +125,39 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<DepositeWithoutWithdrawal>();
             }
-            List<DepositeWithoutWithdrawal> DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+            List<DepositeWithoutWithdrawal> depositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
             string json = File.ReadAllText(DepositeWithoutWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                DepositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
+                depositeWithoutWithdrawal = new List<DepositeWithoutWithdrawal>();
             }
             else
             {
-                DepositeWithoutWithdrawal = JsonSerializer.Deserialize<List<DepositeWithoutWithdrawal>>(json);
+                depositeWithoutWithdrawal = JsonSerializer.Deserialize<List<DepositeWithoutWithdrawal>>(json);
             }
-            return DepositeWithoutWithdrawal;
+            DepositeWithoutWithdrawal = depositeWithoutWithdrawal;
+            return depositeWithoutWithdrawal;
         }
-
-
-
-        public List<DepositeWithWithdrawal> DepositeWithWithdrawalFromJSON()
-
+        public List<DepositeWithWithdrawal> DepositWithWithdrawalFromJSON()
         {
-            if (!File.Exists(DepositeWithWithdrawalPath))
+            if (!File.Exists(DepositWithWithdrawalPath))
             {
-                FileStream fs = File.Create(DepositeWithWithdrawalPath);
+                FileStream fs = File.Create(DepositWithWithdrawalPath);
                 fs.Close();
-
                 return new List<DepositeWithWithdrawal>();
             }
-            List<DepositeWithWithdrawal> depositeWithWithdrawal = new List<DepositeWithWithdrawal>();
-            string json = File.ReadAllText(DepositeWithWithdrawalPath);
+            List<DepositeWithWithdrawal> depositWithWithdrawal = new List<DepositeWithWithdrawal>();
+            string json = File.ReadAllText(DepositWithWithdrawalPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                depositeWithWithdrawal = new List<DepositeWithWithdrawal>();
+                depositWithWithdrawal = new List<DepositeWithWithdrawal>();
             }
             else
             {
-                depositeWithWithdrawal = JsonSerializer.Deserialize<List<DepositeWithWithdrawal>>(json);
-               return new List<DepositeWithWithdrawal>();
+                depositWithWithdrawal = JsonSerializer.Deserialize<List<DepositeWithWithdrawal>>(json);
             }
-           
-            return depositeWithWithdrawal;
+            DepositWithWithdrawal = depositWithWithdrawal;
+            return depositWithWithdrawal;
         }
         public List<Expense> ExpenseFromJSON()
         {
@@ -135,37 +167,39 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<Expense>();
             }
-            List<Expense> Expense = new List<Expense>();
+            List<Expense> expense = new List<Expense>();
             string json = File.ReadAllText(ExpensePath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                Expense = new List<Expense>();
+                expense = new List<Expense>();
             }
             else
             {
-                Expense = JsonSerializer.Deserialize<List<Expense>>(json);
+                expense = JsonSerializer.Deserialize<List<Expense>>(json);
             }
-            return Expense;
+            Expense = expense;
+            return expense;
         }
         public List<Income> IncomeFromJSON()
         {
-            if (!File.Exists(ExpensePath))
+            if (!File.Exists(IncomePath))
             {
                 FileStream fs = File.Create(IncomePath);
                 fs.Close();
                 return new List<Income>();
             }
-            List<Income> Expense = new List<Income>();
+            List<Income> income = new List<Income>();
             string json = File.ReadAllText(IncomePath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                Income = new List<Income>();
+                income = new List<Income>();
             }
             else
             {
-                Income = JsonSerializer.Deserialize<List<Income>>(json);
+                income = JsonSerializer.Deserialize<List<Income>>(json);
             }
-            return Income;
+            Income = income;
+            return income;
         }
         public List<ExpenseCategory> ExpenseCategoryFromJSON()
         {
@@ -175,17 +209,18 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<ExpenseCategory>();
             }
-            List<ExpenseCategory> ExpenseCategory = new List<ExpenseCategory>();
+            List<ExpenseCategory> expenseCategory = new List<ExpenseCategory>();
             string json = File.ReadAllText(ExpenseCategoryPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                ExpenseCategory = new List<ExpenseCategory>();
+                expenseCategory = new List<ExpenseCategory>();
             }
             else
             {
-                ExpenseCategory = JsonSerializer.Deserialize<List<ExpenseCategory>>(json);
+                expenseCategory = JsonSerializer.Deserialize<List<ExpenseCategory>>(json);
             }
-            return ExpenseCategory;
+            ExpenseCategory = expenseCategory;
+            return expenseCategory;
         }
         public List<IncomeCategory> IncomeCategoryFromJSON()
         {
@@ -195,20 +230,30 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<IncomeCategory>();
             }
-            List<IncomeCategory> IncomeCategory = new List<IncomeCategory>();
+            List<IncomeCategory> incomeCategory = new List<IncomeCategory>();
             string json = File.ReadAllText(ExpenseCategoryPath);
             if (string.IsNullOrWhiteSpace(json))
             {
-                IncomeCategory = new List<IncomeCategory>();
+                incomeCategory = new List<IncomeCategory>();
             }
             else
             {
-                IncomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
+                incomeCategory = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
             }
-            return IncomeCategory;
+            IncomeCategory = incomeCategory;
+            return incomeCategory;
         }
-        private Storage() { }
-
+        private Storage()
+        {
+            GetUsersFromJSON();
+            GetCardsFromJSON();
+            GetDepositeWithoutWithdrawalFromJSON();
+            DepositWithWithdrawalFromJSON();
+            ExpenseFromJSON();
+            IncomeFromJSON();
+            ExpenseCategoryFromJSON();
+            IncomeCategoryFromJSON();
+        }
         public static Storage GetInstance()
         {
             if (_storage == null)
@@ -217,5 +262,7 @@ namespace Tushkanchik
             }
             return _storage;
         }
+       
     }
+
 }

@@ -8,16 +8,18 @@ using Tushkanchik.Transactions;
 namespace Tushkanchik
 {
     public class Card : CashAccount
-    {
-       
+    {  
         public decimal PercentOfCashBack { get; set; }
 
-        public Card( User holder, decimal balance, string name, decimal percentOfCashBack)
+        public Card( User holder,  decimal balance, string name, decimal percentOfCashBack)
             :base (holder, balance, name)
         {
             PercentOfCashBack = percentOfCashBack;
         }
 
+       
+
+       
         public void AddCashBackFromExpense (Income income, Expense expense, Storage storage)
         {
             if ( PercentOfCashBack > 0 )
