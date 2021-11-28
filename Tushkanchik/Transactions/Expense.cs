@@ -11,10 +11,10 @@ namespace Tushkanchik.Transactions
     {
         public ExpenseCategory ExpenseCategory { get; set; }
 
-        public Expense(decimal amount, DateTime date, Card card, string comment)
+        public Expense(decimal amount, DateTime date, Card card, string comment, ExpenseCategory expenseCategory)
             : base(amount, date, card,comment)
         {
-
+            ExpenseCategory = expenseCategory;
         }
     }
 }
