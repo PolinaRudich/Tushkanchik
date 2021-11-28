@@ -122,18 +122,21 @@ namespace Tushkanchik
         {
             if (!File.Exists(IncomeCategoriesPath))
             {
-                return new List<IncomeCategory>();
+                //если не существует создаем новый файл по пути и записываем категории
+                PutIncomeCategoriesToJSON(IncomeCategoriesPath);
+                string jSon = File.ReadAllText(IncomeCategoriesPath);
+                List<IncomeCategory> cats = JsonSerializer.Deserialize<List<IncomeCategory>>(jSon);
+                return cats;
             }
             string json = File.ReadAllText(IncomeCategoriesPath);
             List<IncomeCategory> categories = JsonSerializer.Deserialize<List<IncomeCategory>>(json);
             if (categories is null)
             {
                 categories = new List<IncomeCategory>();
-                
             }
             return categories;
-           
         }
+
         public List<ExpenseCategory> GetExpenseCategoriesFromJSON()
         {
             if (!File.Exists(ExpenseCategoriesPath))
