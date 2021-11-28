@@ -34,14 +34,15 @@
                                     <ColumnDefinition Width="62*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="4*"/>
                                     <RowDefinition/>
-                                    <RowDefinition Height="2*"/>
-                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="7*"/>
+                                    <RowDefinition Height="8*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock x:Name ="createAndEnter" TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="2" Grid.ColumnSpan="3">Name</TextBlock>
+                                <TextBlock x:Name ="createAndEnter" TextAlignment="Left" FontSize="24" Margin="-5,-66,6,24" Grid.RowSpan="3" Grid.ColumnSpan="3">Name</TextBlock>
                                 <TextBox x:Name="holderName" Margin="-44,-40,20,53"  Grid.ColumnSpan="2"/>
-                                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create new account" Width="162"  Height="48" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="-60,14,0,0" Click="ButtonCreateUser_Click"/>
-                                <Button x:Name="EnterButton" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-185,22,153,66" Click="ButtonEnter_Click" Grid.RowSpan="2"/>
+                                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create new account" Width="162"  Height="48" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="-60,14,0,0" Click="ButtonCreateUser_Click"/>
+                                <Button x:Name="EnterButton" Content="Enter"  RenderTransformOrigin="0.53,0.509" Margin="-185,22,153,66" Click="ButtonEnter_Click" Grid.RowSpan="3"/>
                             </Grid>
 
                         </StackPanel>
@@ -73,7 +74,7 @@
                     <Label Content="Тип" HorizontalAlignment="Left" Height="27" Margin="477,134,0,0" VerticalAlignment="Top" Width="54" FontWeight="Bold"/>
                     <TextBox TextWrapping="Wrap" Margin="535,83,123,285"/>
                     <Label Content="Процент" HorizontalAlignment="Left" Height="27" Margin="464,90,0,0" VerticalAlignment="Top" Width="66" FontWeight="Bold"/>
-                    <Button Content="Выход" Margin="620,2,41,364"/>
+                    <Button Content="Выход" Margin="620,2,41,364" Click="Button_Click_ExitToLoginPage"/>
                     <TextBox TextWrapping="Wrap" Margin="246,91,446,281"/>
                     <TextBox TextWrapping="Wrap" Margin="531,228,119,140"/>
                     <Label x:Name="nameOfUser" Content="" HorizontalAlignment="Left" Height="28" Margin="126,18,0,0" VerticalAlignment="Top" Width="106" FontSize="15"/>

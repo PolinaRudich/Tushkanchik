@@ -248,7 +248,6 @@ namespace Tushkanchik
             nameOfUser.Content = User.Name;
             TabItemMainTab.IsSelected = true;
             entertab.IsEnabled = false;
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -325,9 +324,14 @@ namespace Tushkanchik
 
             _incomeCategories.Add(category);
 
-            string converted = JsonSerializer.Serialize(_incomeCategories);
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
+            };
+            string converted = JsonSerializer.Serialize(_incomeCategories, options);
             File.WriteAllText(IncomeCategoriesPath, converted);
-            _incomeCategories.Add(category);
+            //string converted = JsonSerializer.Serialize(_incomeCategories);
+            //File.WriteAllText(IncomeCategoriesPath, converted);
         }
 
         private void Button_Click_Add_Expense_Category(object sender, RoutedEventArgs e)
@@ -349,9 +353,21 @@ namespace Tushkanchik
 
             _expenseCategories.Add(category);
 
-            string converted = JsonSerializer.Serialize(_expenseCategories);
+            //string converted = JsonSerializer.Serialize(_expenseCategories);
+            //File.WriteAllText(ExpenseCategoriesPath, converted);
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
+            };
+            string converted = JsonSerializer.Serialize(_expenseCategories, options);
             File.WriteAllText(ExpenseCategoriesPath, converted);
-            _expenseCategories.Add(category);
+        }
+
+
+        private void Button_Click_ExitToLoginPage(object sender, RoutedEventArgs e)
+        {
+            entertab.IsSelected = true;
+            entertab.IsEnabled = true;
         }
     }
 }
