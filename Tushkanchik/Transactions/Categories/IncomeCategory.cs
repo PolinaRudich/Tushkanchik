@@ -9,6 +9,10 @@ namespace Tushkanchik.Transaction.Categories
     public class IncomeCategory 
     {
         public string Name { get; set; }
-       
+
+        public IncomeCategory(string name)
+        {
+            Name = name;
+        }
     }
 }
