@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Tushkanchik.MoneyAccount;
 
 namespace Tushkanchik.Transactions
 {
@@ -11,7 +8,7 @@ namespace Tushkanchik.Transactions
     {
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-       
+
         public Card Card { get; set; }
 
         public string Comment { get; set; }

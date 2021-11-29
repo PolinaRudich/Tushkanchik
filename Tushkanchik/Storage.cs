@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using System.Threading.Tasks;
-using Tushkanchik.Transaction;
+using Tushkanchik.MoneyAccount;
 using Tushkanchik.Transaction.Categories;
 using Tushkanchik.Transactions;
 
@@ -41,7 +37,7 @@ namespace Tushkanchik
 
             foreach (Card card in _storage.Cards)
             {
-                if (card.Holder.Name==user.Name)
+                if (card.Holder.Name == user.Name)
                 {
                     CardForView cardForView = new CardForView() { Card = card, NamePlusBalance = card.Name + " " + card.Balance };
                     cards.Add(cardForView);
@@ -56,7 +52,7 @@ namespace Tushkanchik
 
             foreach (Income income in _storage.Income)
             {
-                
+
                 if (income.Card.Name == card.Name)
                 {
                     IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name };
@@ -65,7 +61,7 @@ namespace Tushkanchik
             }
             return incomes;
         }
-        
+
         public void PutExpenseCategoriesToJSON(string path)
         {
             List<ExpenseCategory> _expenseData = new List<ExpenseCategory>();
@@ -238,8 +234,8 @@ namespace Tushkanchik
                 fs.Close();
                 return new List<IncomeCategory>();
             }
-            List<IncomeCategory> incomeCategory = new List<IncomeCategory>();
-            string json = File.ReadAllText(ExpenseCategoryPath);
+            List<IncomeCategory> incomeCategory;
+            string json = File.ReadAllText(IncomeCategoryPath);
             if (string.IsNullOrWhiteSpace(json))
             {
                 incomeCategory = new List<IncomeCategory>();

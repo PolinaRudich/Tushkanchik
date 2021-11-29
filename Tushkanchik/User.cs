@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tushkanchik
+﻿namespace Tushkanchik
 {
-     public class User
+    public class User
     {
 
         public string Name { get; set; }
-       
-       public User(string name)
+
+        public User(string name)
         {
             Name = name;
         }
-       
+
     }
 }

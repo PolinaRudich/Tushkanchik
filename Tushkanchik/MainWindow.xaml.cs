@@ -1,28 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
+using Tushkanchik.MoneyAccount;
 //using Newtonsoft.Json;
-using System.Diagnostics;
-using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
-using System.Collections.ObjectModel;
 using Tushkanchik.Transactions;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 
 namespace Tushkanchik
 {
@@ -45,17 +32,14 @@ namespace Tushkanchik
 
         private User User { get; set; }
         private Card Card { get; set; }
-        // private ObservableCollection<IncomeCategory> _incomeCategories;
         private Storage _storage;
         private decimal percentOfCashBack;
-        private IncomeCategory incomeCategory;
-        private readonly User holder;
 
         public MainWindow()
-         {
+        {
             InitializeComponent();
             _storage = Storage.GetInstance();
-            
+
             List<Income> incomes = Storage.GetInstance().Income;
             _income = new ObservableCollection<Income>(incomes);
             List<User> usersList = Storage.GetInstance().Users;
@@ -67,6 +51,7 @@ namespace Tushkanchik
 
             _expenseCategories = new ObservableCollection<ExpenseCategory>(_storage.ExpenseCategoryFromJSON());
             ComboBoxExpenseCategories.ItemsSource = _expenseCategories;
+            IncomeOnceInfo.ItemsSource = _incomesForView;
             FillViewData();
         }
 
@@ -87,9 +72,10 @@ namespace Tushkanchik
         public void UpdateIncomesView(Card card)
         {
 
-           
+
             _incomesForView = _storage.GetIncomeForViewByCard(card);
             IncomeOnceInfo.ItemsSource = _incomesForView;
+
         }
         public ObservableCollection<IncomeForView> GetIncomeForViewByCard(Card card)
         {
@@ -100,7 +86,7 @@ namespace Tushkanchik
             {
                 if (income.Card.Name == card.Name)
                 {
-                    IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = Card, income = income,date=income.Date,comment=income.Comment,incomeCategoryName=income.IncomeCategory.Name};
+                    IncomeForView incomeForView = new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = Card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name };
                     incomes.Add(incomeForView);
                 }
             }
@@ -142,7 +128,7 @@ namespace Tushkanchik
             string converted = JsonSerializer.Serialize(_users);
             File.WriteAllText(_storage.UsersPath, converted);
             UpDateCardsView(User);
-            TabItemMainTab.IsSelected = true;
+            //TabItemMainTab.IsSelected = true;
             nameOfUser.Content = name;
             entertab.IsEnabled = false;
         }
@@ -170,112 +156,57 @@ namespace Tushkanchik
         {
 
 
-            
+
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-         {
-            decimal balance;
-            if (Card != null)
-            {
-                balance = Card.Balance;
-            }
-            else
-            {
-                bool isNumber = decimal.TryParse(Cardbalance.Text.Trim(), out balance);
-                if (!isNumber)
-                {
-                    return;
-                }   
-            }
-            string name = cardName.Text.Trim();
-            Card = new Card(User, balance, name, percentOfCashBack);
-            UpdateIncomesView(Card);
-            if (Income.IsSelected)
-            {
-                GetCardsForViewByUser(User);
-                UpdateIncomesView(Card);
-            }
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (e.Source is TabControl && Income.IsSelected) //if this event fired from TabControl then enter
+            {
+                decimal balance;
+                if (Card != null)
+                {
+                    balance = Card.Balance;
+                }
+                else
+                {
+                    bool isNumber = decimal.TryParse(Cardbalance.Text.Trim(), out balance);
+                    if (!isNumber)
+                    {
+                        //return;
+                    }
+                }
+                string name = cardName.Text.Trim();
+                if (Card == null)
+                {
+                    Card = new Card(User, balance, name, percentOfCashBack);
+                }
+                GetCardsForViewByUser(User);
+                //UpdateIncomesView(Card);
+                //IncomeOnceInfo.Columns.RemoveAt(2);
+                //IncomeOnceInfo.Columns.RemoveAt(3);
+            }
         }
         private void Button_Click_Add_Income_Category(object sender, RoutedEventArgs e)
         {
-            UpdateIncomesView(Card);
-            if (ComboBoxIncomeCategories.SelectedItem is null)
+
+            string name = incomeCategoryName.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
             {
-                string name = incomeCategoryName.Text.Trim();
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                incomeCategoryName.Background = Brushes.Transparent;
-                IncomeCategory category = new IncomeCategory() { Name = name };
-                if (_incomeCategories.Contains(category))
-                {
-                    MessageBox.Show("Данная категория уже существует.");
-                    return;
-                }
-
-                _incomeCategories.Add(category);
-
-                string converted = JsonSerializer.Serialize(_incomeCategories);
-                File.WriteAllText(_storage.IncomeCategoryPath, converted);
-                _incomeCategories.Add(category);
-            }
-            else
-            {
-                if (ComboBoxWallet.SelectedItem == null)
-                {
-                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                string summary = Summary.Text.Trim();
-                string DateOfIncome = dateOfIncome.Text.Trim();
-                DateTime parsedDateOfIncome = DateTime.Parse(DateOfIncome);
-                string comment = Comment.Text.Trim();
-                decimal amount;
-                IncomeCategory category = (IncomeCategory)ComboBoxIncomeCategories.SelectedItem;
-                Card = ((CardForView)ComboBoxWallet.SelectedItem).Card;
-                if (string.IsNullOrWhiteSpace(Card.Name))
-                {
-                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                bool isNumber = decimal.TryParse(Summary.Text.Trim(), out amount);
-                if (!isNumber)
-                {
-                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(summary))
-                {
-                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                Income income = new Income(amount, parsedDateOfIncome, Card, comment, category); //{ Name = name }; 
-
-                _income.Add(income);
-                Card card = new Card(User, Card.Balance, Card.Name, percentOfCashBack);
-                _incomesForView.Add(new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name });
-
-                foreach (var incomeForView in _incomesForView)
-                {
-                    _storage.Income.Add(incomeForView.income);
-                }
-
-                string converted = JsonSerializer.Serialize(_income);
-                File.WriteAllText(_storage.IncomePath, converted);
-                UpdateIncomesView(Card);
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
-
-
+            incomeCategoryName.Background = Brushes.Transparent;
+            IncomeCategory category = new IncomeCategory() { Name = name };
+            if (_incomeCategories.Contains(category))
+            {
+                MessageBox.Show("Данная категория уже существует.");
+                return;
+            }
+            _incomeCategories.Add(category);
+            string converted = JsonSerializer.Serialize(_incomeCategories);
+            File.WriteAllText(_storage.IncomeCategoryPath, converted);
         }
 
         private void Button_Click_ExitToLoginPage(object sender, RoutedEventArgs e)
@@ -323,7 +254,7 @@ namespace Tushkanchik
             }
             //TODO вынести в отдельный метод
             decimal balance;
-            bool isNumber = decimal.TryParse(Cardbalance.Text.Trim(), out balance);
+            bool isNumber = decimal.TryParse(cardBalance, out balance);
             if (!isNumber)
             {
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -331,9 +262,16 @@ namespace Tushkanchik
             }
             //TODO разобраться с листами юзеров и тд
             //List<User> cardUsers = new List<User>();
-           // cardUsers.Add(User);
-
-            Card card = new Card( User, balance, name,percentOfCashBack);
+            // cardUsers.Add(User);
+            decimal percentCashback;
+            string percentOfCashBack = PercentOfCashBack.Text.Trim();
+            isNumber = decimal.TryParse(percentOfCashBack, out percentCashback);
+            if (!isNumber)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Card card = new Card(User, balance, name, percentCashback);
             _cardsForView.Add(new CardForView() { NamePlusBalance = name + " " + balance, Card = card });
 
             foreach (var cardForView in _cardsForView)
@@ -347,15 +285,18 @@ namespace Tushkanchik
         }
         private void ComboBoxWallet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             CardForView card = (CardForView)ComboBoxWallet.SelectedItem;
             Card = card.Card;
-
+            Storage.GetInstance().IncomeCategoryFromJSON();
+            _incomesForView = _storage.GetIncomeForViewByCard(Card);
+            UpdateIncomesView(Card);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
-           
+
+
             if (ComboBoxWallet.SelectedItem == null)
             {
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -384,8 +325,8 @@ namespace Tushkanchik
                 MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            Income income = new Income( amount, parsedDateOfIncome,  Card,  comment,  incomeCategory); //{ Name = name };
-           
+            Income income = new Income(amount, parsedDateOfIncome, Card, comment, incomeCategory); //{ Name = name };
+
             _income.Add(income);
             Card card = new Card(User, Card.Balance, Card.Name, percentOfCashBack);
             _incomesForView.Add(new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name });
@@ -403,6 +344,53 @@ namespace Tushkanchik
         private void ComboBoxMoney_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Card = ((CardForView)ComboBoxMoney.SelectedItem).Card;
+            UpdateIncomesView(Card);
+        }
+
+        private void Button_Click_Add_Income(object sender, RoutedEventArgs e)
+        {
+            if (ComboBoxWallet.SelectedItem == null)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string summary = Summary.Text.Trim();
+            string DateOfIncome = dateOfIncome.Text.Trim();
+            DateTime parsedDateOfIncome = DateTime.Parse(DateOfIncome);
+            string comment = Comment.Text.Trim();
+            decimal amount;
+            IncomeCategory category = (IncomeCategory)ComboBoxIncomeCategories.SelectedItem;
+            Card = ((CardForView)ComboBoxWallet.SelectedItem).Card;
+            if (string.IsNullOrWhiteSpace(Card.Name))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            bool isNumber = decimal.TryParse(Summary.Text.Trim(), out amount);
+            if (!isNumber)
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(summary))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Income income = new Income(amount, parsedDateOfIncome, Card, comment, category); //{ Name = name }; 
+
+            _income.Add(income);
+            Card card = new Card(User, Card.Balance, Card.Name, percentOfCashBack);
+            _incomesForView.Add(new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name });
+
+            foreach (IncomeForView incomeForView in _incomesForView)
+            {
+                _storage.Income.Add(incomeForView.income);
+            }
+
+            string converted = JsonSerializer.Serialize(_income);
+            File.WriteAllText(_storage.IncomePath, converted);
+            //UpdateIncomesView(Card);
         }
     }
 }

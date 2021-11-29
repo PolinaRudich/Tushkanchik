@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Tushkanchik
+namespace Tushkanchik.MoneyAccount
 {
     public abstract class Deposite : CashAccount
     {
@@ -11,7 +10,7 @@ namespace Tushkanchik
         public DateTime FinishDate { get; set; }
 
         public Deposite(User holder, decimal balance, string name, decimal percent, DateTime startDate, DateTime finishDate, bool replacement)
-            :base(holder, balance, name)
+            : base(holder, balance, name)
         {
             Replacement = replacement;
             Percent = percent;
