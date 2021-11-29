@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
@@ -63,17 +65,23 @@ namespace Tushkanchik
             }
             return incomes;
         }
-        public List<Card> GetCardsByUser(User user)
+        
+        public void PutExpenseCategoriesToJSON(string path)
         {
-            List<Card> cards = new List<Card>();
-            foreach (Card card in _storage.Cards)
+            List<ExpenseCategory> _expenseData = new List<ExpenseCategory>();
+            _expenseData.Add(new ExpenseCategory() { Name = "Транспорт" });
+            _expenseData.Add(new ExpenseCategory() { Name = "Рестораны" });
+            _expenseData.Add(new ExpenseCategory() { Name = "Кредит" });
+            _expenseData.Add(new ExpenseCategory() { Name = "Связь" });
+            _expenseData.Add(new ExpenseCategory() { Name = "Развлечения" });
+            _expenseData.Add(new ExpenseCategory() { Name = "Остальное" });
+
+            JsonSerializerOptions options = new JsonSerializerOptions
             {
-                if (card.Holder.Name == user.Name)
-                {
-                    cards.Add(card);
-                }
-            }
-            return cards;
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
+            };
+            string json = JsonSerializer.Serialize(_expenseData, options);
+            File.WriteAllText(path, json);
         }
         public List<User> GetUsersFromJSON()
         {
@@ -262,7 +270,18 @@ namespace Tushkanchik
             }
             return _storage;
         }
-       
+        public List<Card> GetCardsByUser(User user)
+        {
+            List<Card> cards = new List<Card>();
+            foreach (Card card in _storage.Cards)
+            {
+                if (card.Holder.Name == user.Name)
+                {
+                    cards.Add(card);
+                }
+            }
+            return cards;
+        }
     }
 
 }

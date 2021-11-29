@@ -21,6 +21,8 @@ using Tushkanchik.Transaction;
 using Tushkanchik.Transaction.Categories;
 using System.Collections.ObjectModel;
 using Tushkanchik.Transactions;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Tushkanchik
 {
@@ -37,6 +39,10 @@ namespace Tushkanchik
         public ObservableCollection<User> _users;
         public ObservableCollection<Income> _income;
         public ObservableCollection<Card> _cards;
+        private ObservableCollection<IncomeCategory> _incomeCategories;
+        private ObservableCollection<ExpenseCategory> _expenseCategories;
+
+
         private User User { get; set; }
         private Card Card { get; set; }
         // private ObservableCollection<IncomeCategory> _incomeCategories;
@@ -56,6 +62,11 @@ namespace Tushkanchik
             _users = new ObservableCollection<User>(usersList);
             List<Card> cardsList = Storage.GetInstance().Cards;
             _cards = new ObservableCollection<Card>(cardsList);
+            _incomeCategories = new ObservableCollection<IncomeCategory>(_storage.IncomeCategoryFromJSON());
+            ComboBoxIncomeCategories.ItemsSource = _incomeCategories;
+
+            _expenseCategories = new ObservableCollection<ExpenseCategory>(_storage.ExpenseCategoryFromJSON());
+            ComboBoxExpenseCategories.ItemsSource = _expenseCategories;
             FillViewData();
         }
 
@@ -64,9 +75,6 @@ namespace Tushkanchik
 
             ComboBoxUsersList.ItemsSource = _users;
             IncomeOnceInfo.ItemsSource = _incomesForView;
-
-
-
         }
         public void UpDateCardsView(User user)
         {
@@ -194,6 +202,110 @@ namespace Tushkanchik
         {
 
         }
+        private void Button_Click_Add_Income_Category(object sender, RoutedEventArgs e)
+        {
+            UpdateIncomesView(Card);
+            if (ComboBoxIncomeCategories.SelectedItem is null)
+            {
+                string name = incomeCategoryName.Text.Trim();
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                incomeCategoryName.Background = Brushes.Transparent;
+                IncomeCategory category = new IncomeCategory() { Name = name };
+                if (_incomeCategories.Contains(category))
+                {
+                    MessageBox.Show("Данная категория уже существует.");
+                    return;
+                }
+
+                _incomeCategories.Add(category);
+
+                string converted = JsonSerializer.Serialize(_incomeCategories);
+                File.WriteAllText(_storage.IncomeCategoryPath, converted);
+                _incomeCategories.Add(category);
+            }
+            else
+            {
+                if (ComboBoxWallet.SelectedItem == null)
+                {
+                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                string summary = Summary.Text.Trim();
+                string DateOfIncome = dateOfIncome.Text.Trim();
+                DateTime parsedDateOfIncome = DateTime.Parse(DateOfIncome);
+                string comment = Comment.Text.Trim();
+                decimal amount;
+                IncomeCategory category = (IncomeCategory)ComboBoxIncomeCategories.SelectedItem;
+                Card = ((CardForView)ComboBoxWallet.SelectedItem).Card;
+                if (string.IsNullOrWhiteSpace(Card.Name))
+                {
+                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                bool isNumber = decimal.TryParse(Summary.Text.Trim(), out amount);
+                if (!isNumber)
+                {
+                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(summary))
+                {
+                    MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                Income income = new Income(amount, parsedDateOfIncome, Card, comment, category); //{ Name = name }; 
+
+                _income.Add(income);
+                Card card = new Card(User, Card.Balance, Card.Name, percentOfCashBack);
+                _incomesForView.Add(new IncomeForView() { cardName = card.Name, amount = income.Amount, Card = card, income = income, date = income.Date, comment = income.Comment, incomeCategoryName = income.IncomeCategory.Name });
+
+                foreach (var incomeForView in _incomesForView)
+                {
+                    _storage.Income.Add(incomeForView.income);
+                }
+
+                string converted = JsonSerializer.Serialize(_income);
+                File.WriteAllText(_storage.IncomePath, converted);
+                UpdateIncomesView(Card);
+            }
+
+
+
+        }
+
+        private void Button_Click_ExitToLoginPage(object sender, RoutedEventArgs e)
+        {
+            entertab.IsSelected = true;
+            entertab.IsEnabled = true;
+        }
+        private void Button_Click_Add_Expense_Category(object sender, RoutedEventArgs e)
+        {
+            string name = expenseCategoryName.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Вы не можете!", "Мочь или не мочь", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            expenseCategoryName.Background = Brushes.Transparent;
+            ExpenseCategory category = new ExpenseCategory() { Name = name };
+            if (_expenseCategories.Contains(category))
+            {
+                MessageBox.Show("Данная категория уже существует.");
+                return;
+            }
+
+            _expenseCategories.Add(category);
+
+            string converted = JsonSerializer.Serialize(_expenseCategories);
+            File.WriteAllText(_storage.ExpenseCategoryPath, converted);
+            _expenseCategories.Add(category);
+        }
 
         private void ButtonAddNewCard_Click(object sender, RoutedEventArgs e)
         {
@@ -290,7 +402,7 @@ namespace Tushkanchik
 
         private void ComboBoxMoney_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            Card = ((CardForView)ComboBoxMoney.SelectedItem).Card;
         }
     }
 }
