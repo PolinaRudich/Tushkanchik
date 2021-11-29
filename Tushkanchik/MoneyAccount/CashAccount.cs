@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using Tushkanchik.Transactions;
 
-namespace Tushkanchik
+namespace Tushkanchik.MoneyAccount
 {
-    public abstract class CashAccount
+    public class CashAccount
     {
         public User Holder { get; set; }
         public decimal Balance { get; set; }
         public string Name { get; set; }
-
         public CashAccount(User holder, decimal balance, string name)
         {
+
             Holder = holder;
             Balance = balance;
             Name = name;
         }
-
         public void IncreaseBalance(Income income, Storage storage)
         {
             Balance += income.Amount;
@@ -35,11 +33,9 @@ namespace Tushkanchik
                 throw new Exception("Недостаточно средств ");
             }
         }
-
         public void ChangeName(string name)
         {
             Name = name;
         }
-
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Tushkanchik
+namespace Tushkanchik.MoneyAccount
 {
-    public class DepositeWithWithdrawal:Deposite
+    public class DepositeWithWithdrawal : Deposite
     {
 
         public bool withdrawal { get; set; }
